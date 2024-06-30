@@ -20,6 +20,23 @@ const validateUserRegistration = [
         .withMessage("Pasword is required")
 ]
 
+
+// validate user login input
+const validateUserLogin = [
+    body("email")
+        .trim()
+        .notEmpty()
+        .withMessage("Email is required")
+        .isEmail()
+        .withMessage("Emails is not valid"),
+
+    body("password")
+        .trim()
+        .notEmpty()
+        .withMessage("Pasword is required")
+]
+
 module.exports = {
-    validateUserRegistration
+    validateUserRegistration,
+    validateUserLogin
 }

@@ -7,6 +7,7 @@ const { errorResponse } = require("../handler/responseHandler")
 const app = express()
 
 const userRoutes = require("../routes/userRoutes")
+const authRoutes = require("../routes/authRoutes")
 
 
 // middlewares
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // routes
 app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/auth", authRoutes)
 
 
 app.get("/test", (req, res) => {
