@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Password is required"],
+        set: (v) => bcrypt.hashSync(v, bcrypt.genSaltSync(10))
     },
     isAdmin: {
         type: Boolean,
@@ -25,11 +26,5 @@ const userSchema = new mongoose.Schema({
     },
 }, { timestamps: true })
 
-userSchema.pre("save", async function (next) {
-    if (this.isModified("password")) {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
-    next();
-});
 
 module.exports = mongoose.model("User", userSchema)
