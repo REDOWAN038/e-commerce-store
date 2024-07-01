@@ -63,6 +63,12 @@ const handleUpdateCategory = asyncHandler(async (req, res, next) => {
     const updates = { name, slug: slugify(name) }
     const options = { new: true }
 
+    const existingCategory = await categoryModel.find({ slug: slugify(name) })
+
+    if (existingCategory) {
+        next(createError(409, `${name} category is already available`))
+    }
+
     const updatedCategory = await categoryModel.findOneAndUpdate({ slug }, updates, options)
 
     if (!updatedCategory || updatedCategory.length == 0) {

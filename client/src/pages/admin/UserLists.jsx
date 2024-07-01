@@ -95,17 +95,21 @@ const UserLists = () => {
                             <td>{user?.email}</td>
                             <td>
                                 {user?.isAdmin ? (
-                                    <GiCheckMark className='text-green-600' />
+                                    <GiCheckMark className='text-green-600 w-4 h-4' />
                                 ) : (
-                                    <FaXmark className='text-red-600' />
+                                    <FaXmark className='text-red-600 w-5 h-5' />
                                 )}
                             </td>
                             <td>
                                 {user?.isAdmin ? null : (
-                                    <MdDelete
-                                        className='cursor-pointer text-red-600 w-4 h-4'
-                                        onClick={() => handleDelete(user._id)}
-                                    />
+                                    <div className='tooltip' data-tip='delete'>
+                                        <MdDelete
+                                            className='cursor-pointer text-red-600 w-5 h-5'
+                                            onClick={() =>
+                                                handleDelete(user._id)
+                                            }
+                                        />
+                                    </div>
                                 )}
                             </td>
                         </tr>

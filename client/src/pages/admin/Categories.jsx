@@ -104,7 +104,8 @@ const Categories = () => {
         } catch (error) {
             if (
                 error?.response?.status === 403 ||
-                error?.response?.status === 404
+                error?.response?.status === 404 ||
+                error?.response?.status === 409
             ) {
                 showToast(error?.response?.data?.message, "error")
             } else {
