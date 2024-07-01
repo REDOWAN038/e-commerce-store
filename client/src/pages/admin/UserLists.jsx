@@ -12,7 +12,7 @@ const UserLists = () => {
     const getAllUsers = async () => {
         try {
             const res = await axios.get(
-                `${import.meta.env.VITE_SERVER_URL}/api/v1/admin/users/get-all`,
+                `${import.meta.env.VITE_SERVER_URL}/api/v1/admin/users`,
                 {
                     withCredentials: true,
                 }

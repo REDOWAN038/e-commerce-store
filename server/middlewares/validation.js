@@ -36,7 +36,16 @@ const validateUserLogin = [
         .withMessage("Pasword is required")
 ]
 
+// validate category
+const validateCategory = [
+    body("name")
+        .trim()
+        .notEmpty()
+        .withMessage("category name is required"),
+]
+
 module.exports = {
     validateUserRegistration,
-    validateUserLogin
+    validateUserLogin,
+    validateCategory
 }

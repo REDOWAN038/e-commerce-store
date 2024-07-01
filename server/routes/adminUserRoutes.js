@@ -4,13 +4,13 @@ const { handleGetAllUsers, handleGetUserById, handleDeleteUserById } = require("
 const router = express.Router()
 
 // get all users
-router.get("/users/get-all", isLoggedIn, isAdmin, handleGetAllUsers)
+router.get("/", isLoggedIn, isAdmin, handleGetAllUsers)
 
 // get user by id
-router.get("/users/:id", isLoggedIn, isAdmin, handleGetUserById)
+router.get("/:id", isLoggedIn, isAdmin, handleGetUserById)
 
 // delete user by id
-router.delete("/users/:id", isLoggedIn, isAdmin, handleDeleteUserById)
+router.delete("/:id", isLoggedIn, isAdmin, handleDeleteUserById)
 
 
 module.exports = router
