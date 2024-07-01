@@ -6,6 +6,7 @@ import ProtectedRoute from "./protection/ProtectedRoutes"
 import SignUp from "./pages/auth/SignUp"
 import Profile from "./pages/users/Profile"
 import UserLists from "./pages/admin/UserLists"
+import Categories from "./pages/admin/Categories"
 
 const App = () => {
     return (
@@ -55,6 +56,16 @@ const App = () => {
                         <ProtectedRoute accessBy='admin'>
                             <Layout>
                                 <UserLists />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/admin/category'
+                    element={
+                        <ProtectedRoute accessBy='admin'>
+                            <Layout>
+                                <Categories />
                             </Layout>
                         </ProtectedRoute>
                     }
