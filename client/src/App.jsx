@@ -4,6 +4,7 @@ import { Home } from "./pages/users/Home"
 import SignIn from "./pages/auth/SignIn"
 import ProtectedRoute from "./protection/ProtectedRoutes"
 import SignUp from "./pages/auth/SignUp"
+import Profile from "./pages/users/Profile"
 
 const App = () => {
     return (
@@ -33,6 +34,16 @@ const App = () => {
                         <ProtectedRoute accessBy='unauthorized'>
                             <Layout>
                                 <SignUp />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/profile'
+                    element={
+                        <ProtectedRoute accessBy='authorized'>
+                            <Layout>
+                                <Profile />
                             </Layout>
                         </ProtectedRoute>
                     }
