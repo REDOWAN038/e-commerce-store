@@ -4,7 +4,12 @@ import axios from "axios"
 import { showToast } from "../../utils/toast"
 
 const SignUp = () => {
-    const { register, handleSubmit } = useForm()
+    const {
+        register,
+        watch,
+        handleSubmit,
+        formState: { errors },
+    } = useForm()
 
     const navigate = useNavigate()
 
@@ -74,17 +79,45 @@ const SignUp = () => {
                             required
                             {...register("password")}
                         />
+                    </div>
+                    <div className='form-control'>
                         <label className='label'>
-                            <Link
-                                to='/signin'
-                                className='label-text-alt link link-hover'
-                            >
-                                Sign In
-                            </Link>
+                            <span className='label-text'>Confirm Password</span>
                         </label>
+                        <input
+                            type='password'
+                            placeholder='confirm password'
+                            className='input input-bordered'
+                            required
+                            {...register("confirmPassword", {
+                                validate: (val) => {
+                                    if (!val) {
+                                        return "This field is required"
+                                    } else if (watch("password") !== val) {
+                                        return "Your passwords do not match"
+                                    }
+                                },
+                            })}
+                        />
+                        {errors.confirmPassword && (
+                            <span className='text-red-500'>
+                                {errors.confirmPassword.message}
+                            </span>
+                        )}
                     </div>
                     <div className='form-control mt-6'>
                         <button className='btn btn-primary'>Register</button>
+                    </div>
+                    <div className='flex items-center justify-center mt-3'>
+                        <span className='text-sm'>
+                            Already have an account?
+                            <Link
+                                to='/signin'
+                                className='label-text-alt text-sm link link-hover'
+                            >
+                                Sign In
+                            </Link>
+                        </span>
                     </div>
                 </form>
             </div>

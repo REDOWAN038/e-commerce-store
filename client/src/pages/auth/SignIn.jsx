@@ -68,16 +68,27 @@ const SignIn = () => {
                             {...register("password")}
                         />
                         <label className='label'>
-                            <Link
-                                to='/signup'
+                            <a
+                                href='#'
                                 className='label-text-alt link link-hover'
                             >
-                                Sign Up
-                            </Link>
+                                Forgot password?
+                            </a>
                         </label>
                     </div>
                     <div className='form-control mt-6'>
                         <button className='btn btn-primary'>Login</button>
+                    </div>
+                    <div className='flex items-center justify-center mt-3'>
+                        <span className='text-sm'>
+                            Not have an account?
+                            <Link
+                                to='/signup'
+                                className='label-text-alt text-sm link link-hover'
+                            >
+                                Sign Up
+                            </Link>
+                        </span>
                     </div>
                 </form>
             </div>

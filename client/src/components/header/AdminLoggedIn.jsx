@@ -1,5 +1,5 @@
-import { BsCart2 } from "react-icons/bs"
-import { FaRegHeart } from "react-icons/fa6"
+// import { BsCart2 } from "react-icons/bs"
+// import { FaRegHeart } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import { useDispatch } from "react-redux"
@@ -8,7 +8,7 @@ import { logout } from "../../features/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 import Person from "../../assets/person.jpg"
 
-const UserLoggedIn = () => {
+const AdminLoggedIn = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -37,7 +37,7 @@ const UserLoggedIn = () => {
                 </Link>
             </div>
             <div className='flex-none'>
-                <div className='dropdown dropdown-end'>
+                {/* <div className='dropdown dropdown-end'>
                     <div
                         tabIndex={0}
                         role='button'
@@ -79,7 +79,7 @@ const UserLoggedIn = () => {
                             </Link>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className='dropdown dropdown-end'>
                     <div
                         tabIndex={0}
@@ -101,6 +101,21 @@ const UserLoggedIn = () => {
                             <Link to='/profile'>Profile</Link>
                         </li>
                         <li>
+                            <Link to='/admin/dashboard'>Dashboard</Link>
+                        </li>
+                        <li>
+                            <Link to='/admin/products'>Products</Link>
+                        </li>
+                        <li>
+                            <Link to='/admin/category'>Category</Link>
+                        </li>
+                        <li>
+                            <Link to='/admin/orders'>Orders</Link>
+                        </li>
+                        <li>
+                            <Link to='/admin/users'>Users</Link>
+                        </li>
+                        <li>
                             <a onClick={() => handleLogout()}>Logout</a>
                         </li>
                     </ul>
@@ -110,4 +125,4 @@ const UserLoggedIn = () => {
     )
 }
 
-export default UserLoggedIn
+export default AdminLoggedIn
