@@ -41,7 +41,8 @@ const SignIn = () => {
 
     return (
         <div className='flex items-center justify-center'>
-            <div className='card bg-base-100 shadow-2xl w-2/3 md:w-1/3'>
+            <div className='card bg-base-100 shadow-2xl w-2/3 lg:w-1/3'>
+                <h1 className='flex justify-center mt-5 text-3xl'>Sign In</h1>
                 <form className='card-body' onSubmit={handleSubmit(onSubmit)}>
                     <div className='form-control'>
                         <label className='label'>
