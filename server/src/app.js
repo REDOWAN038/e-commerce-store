@@ -6,11 +6,13 @@ const { errorResponse } = require("../handler/responseHandler")
 
 const app = express()
 
-const userRoutes = require("../routes/userRoutes")
 const authRoutes = require("../routes/authRoutes")
+const userRoutes = require("../routes/userRoutes")
+const categoryRoutes = require("../routes/categoryRoutes")
+const productRoutes = require("../routes/productRoutes")
 const adminUserRoutes = require("../routes/adminUserRoutes")
 const adminCategoryRoutes = require("../routes/adminCategoryRoutes")
-const categoryRoutes = require("../routes/categoryRoutes")
+const adminProductRoutes = require("../routes/adminProductRoutes")
 
 
 // middlewares
@@ -30,8 +32,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/category", categoryRoutes)
+app.use("/api/v1/product", productRoutes)
 app.use("/api/v1/admin/users", adminUserRoutes)
 app.use("/api/v1/admin/category", adminCategoryRoutes)
+app.use("/api/v1/admin/product", adminProductRoutes)
 
 
 app.get("/test", (req, res) => {
