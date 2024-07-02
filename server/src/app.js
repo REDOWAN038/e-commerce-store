@@ -9,6 +9,7 @@ const app = express()
 const userRoutes = require("../routes/userRoutes")
 const authRoutes = require("../routes/authRoutes")
 const adminUserRoutes = require("../routes/adminUserRoutes")
+const adminCategoryRoutes = require("../routes/adminCategoryRoutes")
 const categoryRoutes = require("../routes/categoryRoutes")
 
 
@@ -26,10 +27,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // routes
-app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/category", categoryRoutes)
 app.use("/api/v1/admin/users", adminUserRoutes)
-app.use("/api/v1/admin/category", categoryRoutes)
+app.use("/api/v1/admin/category", adminCategoryRoutes)
 
 
 app.get("/test", (req, res) => {

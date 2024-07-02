@@ -14,10 +14,7 @@ const Categories = () => {
     const getAllCategories = async () => {
         try {
             const res = await axios.get(
-                `${import.meta.env.VITE_SERVER_URL}/api/v1/admin/category`,
-                {
-                    withCredentials: true,
-                }
+                `${import.meta.env.VITE_SERVER_URL}/api/v1/category`
             )
 
             if (res?.data?.success) {
