@@ -77,6 +77,30 @@ const handleGetAllProducts = asyncHandler(async (req, res, next) => {
     })
 })
 
+// get top products
+const handleGetTopProducts = asyncHandler(async (req, res, next) => {
+    const products = await productModel.find({}).sort({ rating: -1 }).limit(4)
+    return successResponse(res, {
+        statusCode: 200,
+        message: "fetched top products",
+        payload: {
+            products,
+        }
+    })
+})
+
+// get new products
+const handleGetNewProducts = asyncHandler(async (req, res, next) => {
+    const products = await productModel.find({}).sort({ createdAt: -1 }).limit(5)
+    return successResponse(res, {
+        statusCode: 200,
+        message: "fetched new products",
+        payload: {
+            products,
+        }
+    })
+})
+
 // get single product
 const hanldeGetSingleProduct = asyncHandler(async (req, res, next) => {
     const { slug } = req.params
@@ -152,10 +176,51 @@ const handleDeleteProduct = asyncHandler(async (req, res, next) => {
     })
 })
 
+// add review
+const handleAddReview = asyncHandler(async (req, res, next) => {
+    const { rating, comment } = req.body;
+    const { slug } = req.params
+    const product = await productModel.findOne({ slug })
+
+    if (!product || product.length === 0) {
+        return next(createError(404, "no product found"))
+    }
+
+    const alreadyReviewed = product.reviews.find(
+        (review) => review.user.toString() === req.user._id.toString()
+    );
+
+    if (alreadyReviewed) {
+        return next(createError(403, "Already Reviewed"))
+    }
+
+    const review = {
+        name: req.user.name,
+        rating: Number(rating),
+        comment,
+        user: req.user._id,
+    };
+
+    product.reviews.push(review);
+    product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+
+    await product.save();
+
+    return successResponse(res, {
+        statusCode: 201,
+        message: "review added successfully",
+    })
+})
+
 module.exports = {
     handleCreateProduct,
     handleUpdateProduct,
     handleDeleteProduct,
     handleGetAllProducts,
-    hanldeGetSingleProduct
+    hanldeGetSingleProduct,
+    handleAddReview,
+    handleGetTopProducts,
+    handleGetNewProducts
 }
