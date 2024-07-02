@@ -140,6 +140,10 @@ const handleUpdateProduct = asyncHandler(async (req, res, next) => {
         }
     }
 
+    const product = await productModel.find({ slug })
+    const deletedImageUrls = product[0].images.filter(item => !req.body?.images.includes(item));
+    await deleteFromCloudinary(deletedImageUrls, cloudFolder);
+
     const updatedImageUrls = await uploadToCloudinary(imageFiles, cloudFolder)
     updates.images = ([...updatedImageUrls, ...(req.body?.images || [])])
 

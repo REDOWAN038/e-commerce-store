@@ -8,6 +8,7 @@ import Profile from "./pages/users/Profile"
 import UserLists from "./pages/admin/UserLists"
 import Categories from "./pages/admin/Categories"
 import AddProduct from "./pages/admin/AddProduct"
+import UpdateProduct from "./pages/admin/UpdateProduct"
 
 const App = () => {
     return (
@@ -77,6 +78,16 @@ const App = () => {
                         <ProtectedRoute accessBy='admin'>
                             <Layout>
                                 <AddProduct />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/admin/update-product/:slug'
+                    element={
+                        <ProtectedRoute accessBy='admin'>
+                            <Layout>
+                                <UpdateProduct />
                             </Layout>
                         </ProtectedRoute>
                     }

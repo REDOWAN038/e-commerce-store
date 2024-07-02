@@ -15,6 +15,7 @@ const ProductForm = ({
         watch,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm()
 
@@ -45,7 +46,9 @@ const ProductForm = ({
             formData.append("description", productData.description)
             formData.append("price", productData.price.toString())
             formData.append("quantity", productData.quantity.toString())
-            formData.append("category", productData.category)
+            if (method === "Add") {
+                formData.append("category", productData.category)
+            }
 
             if (productData.images) {
                 productData.images.forEach((url, index) => {
@@ -63,9 +66,23 @@ const ProductForm = ({
         }
     }
 
-    // useEffect(() => {
-    //     reset(hotel)
-    // }, [hotel, reset])
+    const handleDelete = (e, imageUrl) => {
+        e.preventDefault()
+        const isConfirmed = window.confirm(
+            "Are you sure you want to delete this image?"
+        )
+
+        if (isConfirmed) {
+            setValue(
+                "images",
+                existingImageUrls.filter((url) => url !== imageUrl)
+            )
+        }
+    }
+
+    useEffect(() => {
+        reset(product)
+    }, [product, reset])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,21 +92,20 @@ const ProductForm = ({
                 console.log(error)
             }
         }
-        if (method === "Add") {
-            fetchData()
-        }
+        fetchData()
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div className='flex items-center justify-center'>
             <form
-                className='flex flex-col gap-10'
+                className='flex flex-col gap-10 mx-2'
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <h1 className='flex justify-center text-3xl'>{`${method} Product`}</h1>
-                <div className='flex gap-4'>
-                    <div>
+                <div className='flex flex-col sm:flex-row gap-4'>
+                    <div className='w-full'>
                         <label className='label'>
                             <span className='label-text'>Product Name</span>
                         </label>
@@ -101,7 +117,7 @@ const ProductForm = ({
                             {...register("name")}
                         />
                     </div>
-                    <div>
+                    <div className='w-full'>
                         <label className='label'>
                             <span className='label-text'>Product Brand</span>
                         </label>
@@ -115,7 +131,7 @@ const ProductForm = ({
                     </div>
                 </div>
                 <div className='flex gap-4'>
-                    <div>
+                    <div className='w-full'>
                         <label className='label'>
                             <span className='label-text'>Price</span>
                         </label>
@@ -127,7 +143,7 @@ const ProductForm = ({
                             {...register("price")}
                         />
                     </div>
-                    <div>
+                    <div className='w-full'>
                         <label className='label'>
                             <span className='label-text'>Quantity</span>
                         </label>
@@ -151,21 +167,29 @@ const ProductForm = ({
                         {...register("description")}
                     ></textarea>
                 </div>
-                <div>
+                <div className='w-full'>
                     <label className='label'>
                         <span className='label-text'>Product Category</span>
                     </label>
-                    <select
-                        className='select select-bordered w-full max-w-xs'
-                        required
-                        {...register("category")}
-                    >
-                        {categories?.map((category, idx) => (
-                            <option key={idx} value={category._id}>
-                                {category.name}
+
+                    {product ? (
+                        <select className='select select-bordered w-full max-w-xs'>
+                            <option value={product?.category?._id}>
+                                {product?.category?.name}
                             </option>
-                        ))}
-                    </select>
+                        </select>
+                    ) : (
+                        <select
+                            className='select select-bordered w-full max-w-xs'
+                            required
+                        >
+                            {categories?.map((category, idx) => (
+                                <option key={idx} value={category._id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    )}
                 </div>
                 <div>
                     <label className='label'>
@@ -181,9 +205,9 @@ const ProductForm = ({
                                             className='min-h-full object-cover'
                                         />
                                         <button
-                                            // onClick={(e) =>
-                                            //     handleDelete(e, url)
-                                            // }
+                                            onClick={(e) =>
+                                                handleDelete(e, url)
+                                            }
                                             className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 text-white'
                                         >
                                             Delete
