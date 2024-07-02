@@ -142,7 +142,7 @@ const Categories = () => {
                 <button
                     className='btn btn-active btn-primary ml-2'
                     onClick={
-                        categoryButtonName === "create"
+                        categoryButtonName === "Create"
                             ? () => handleCreate()
                             : () => handleUpdate()
                     }

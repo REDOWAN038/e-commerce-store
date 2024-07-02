@@ -7,6 +7,7 @@ import SignUp from "./pages/auth/SignUp"
 import Profile from "./pages/users/Profile"
 import UserLists from "./pages/admin/UserLists"
 import Categories from "./pages/admin/Categories"
+import AddProduct from "./pages/admin/AddProduct"
 
 const App = () => {
     return (
@@ -66,6 +67,16 @@ const App = () => {
                         <ProtectedRoute accessBy='admin'>
                             <Layout>
                                 <Categories />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/admin/add-product'
+                    element={
+                        <ProtectedRoute accessBy='admin'>
+                            <Layout>
+                                <AddProduct />
                             </Layout>
                         </ProtectedRoute>
                     }
