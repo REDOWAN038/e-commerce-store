@@ -9,6 +9,7 @@ import UserLists from "./pages/admin/UserLists"
 import Categories from "./pages/admin/Categories"
 import AddProduct from "./pages/admin/AddProduct"
 import UpdateProduct from "./pages/admin/UpdateProduct"
+import AllProducts from "./pages/admin/AllProducts"
 
 const App = () => {
     return (
@@ -68,6 +69,16 @@ const App = () => {
                         <ProtectedRoute accessBy='admin'>
                             <Layout>
                                 <Categories />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/admin/products'
+                    element={
+                        <ProtectedRoute accessBy='admin'>
+                            <Layout>
+                                <AllProducts />
                             </Layout>
                         </ProtectedRoute>
                     }

@@ -182,6 +182,7 @@ const ProductForm = ({
                         <select
                             className='select select-bordered w-full max-w-xs'
                             required
+                            {...register("category")}
                         >
                             {categories?.map((category, idx) => (
                                 <option key={idx} value={category._id}>

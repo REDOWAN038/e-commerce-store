@@ -46,7 +46,7 @@ const handleCreateProduct = asyncHandler(async (req, res, next) => {
 // get all products
 const handleGetAllProducts = asyncHandler(async (req, res, next) => {
     const page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 5
+    const limit = Number(req.query.limit) || 6
     const query = constructQuery(req.query)
 
     const products = await productModel
@@ -68,6 +68,7 @@ const handleGetAllProducts = asyncHandler(async (req, res, next) => {
         payload: {
             products,
             pagination: {
+                totalProducts,
                 totalPages: Math.ceil(totalProducts / limit),
                 currentPage: page,
                 previousPage: page - 1 > 0 ? page - 1 : null,

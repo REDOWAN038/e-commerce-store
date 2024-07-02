@@ -19,7 +19,7 @@ const AddProduct = () => {
             if (res?.data?.success) {
                 setIsLoading(false)
                 showToast(res?.data?.message, "success")
-                navigate("/")
+                navigate("/admin/products")
             }
         } catch (error) {
             setIsLoading(false)
