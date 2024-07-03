@@ -4,6 +4,7 @@ import Person from "../../assets/person.jpg"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { selectFavourites } from "../../features/favourites/selector"
+import Favourites from "../Favourites"
 
 const UserNotLoggedIn = () => {
     const favourites = useSelector(selectFavourites)
@@ -23,9 +24,9 @@ const UserNotLoggedIn = () => {
                         className='btn btn-ghost btn-circle'
                     >
                         <div className='indicator'>
-                            <Link to='/cart'>
-                                <BsCart2 className='h-5 w-5' />
-                            </Link>
+                            {/* <Link to='/cart'> */}
+                            <BsCart2 className='h-5 w-5' />
+                            {/* </Link> */}
                         </div>
                     </div>
                 </div>
@@ -36,9 +37,7 @@ const UserNotLoggedIn = () => {
                         className='btn btn-ghost btn-circle'
                     >
                         <div className='indicator'>
-                            <Link to='/wishlist'>
-                                <FaRegHeart className='h-5 w-5' />
-                            </Link>
+                            <FaRegHeart className='h-5 w-5' />
                             {favourites.length > 0 && (
                                 <span className='badge badge-sm indicator-item'>
                                     {favourites.length}
@@ -46,6 +45,23 @@ const UserNotLoggedIn = () => {
                             )}
                         </div>
                     </div>
+                    {favourites.length > 0 ? (
+                        <div
+                            tabIndex={0}
+                            className='card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-64 shadow'
+                        >
+                            <ul
+                                tabIndex={0}
+                                className='dropdown-content menu bg-base-100 z-[1] w-56 p-2 shadow overflow-y-auto'
+                            >
+                                {favourites.map((fav, idx) => (
+                                    <li key={idx}>
+                                        <Favourites fav={fav} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : null}
                 </div>
                 <div className='dropdown dropdown-end'>
                     <div

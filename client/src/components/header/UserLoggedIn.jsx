@@ -46,9 +46,9 @@ const UserLoggedIn = () => {
                         className='btn btn-ghost btn-circle'
                     >
                         <div className='indicator'>
-                            <Link to='/cart'>
-                                <BsCart2 className='h-5 w-5' />
-                            </Link>
+                            {/* <Link to='/cart'> */}
+                            <BsCart2 className='h-5 w-5' />
+                            {/* </Link> */}
                             <span className='badge badge-sm indicator-item'>
                                 8
                             </span>
