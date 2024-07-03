@@ -2,14 +2,16 @@ import { BsCart2 } from "react-icons/bs"
 import { FaRegHeart } from "react-icons/fa6"
 import { Link } from "react-router-dom"
 import axios from "axios"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { showToast } from "../../utils/toast"
 import { logout } from "../../features/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 import Person from "../../assets/person.jpg"
+import { selectFavourites } from "../../features/favourites/selector"
 
 const UserLoggedIn = () => {
     const dispatch = useDispatch()
+    const favourites = useSelector(selectFavourites)
     const navigate = useNavigate()
 
     const handleLogout = async () => {
@@ -30,7 +32,7 @@ const UserLoggedIn = () => {
         }
     }
     return (
-        <div className='navbar bg-base-100 border-b'>
+        <div className='navbar bg-base-100 border-b fixed z-10'>
             <div className='flex-1'>
                 <Link to='/' className='btn btn-ghost text-xl'>
                     Store
@@ -77,6 +79,11 @@ const UserLoggedIn = () => {
                             <Link to='/wishlist'>
                                 <FaRegHeart className='h-5 w-5' />
                             </Link>
+                            {favourites.length > 0 && (
+                                <span className='badge badge-sm indicator-item'>
+                                    {favourites.length}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>

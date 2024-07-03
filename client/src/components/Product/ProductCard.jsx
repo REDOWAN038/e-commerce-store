@@ -1,9 +1,46 @@
 import { BsCart2 } from "react-icons/bs"
-import { FaRegHeart } from "react-icons/fa6"
+import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import { AiFillStar } from "react-icons/ai"
 import moment from "moment"
+import { useEffect, useState } from "react"
+import {
+    addFavoriteToLocalStorage,
+    isFavourite,
+    removeFavoriteFromLocalStorage,
+    getFavoritesFromLocalStorage,
+} from "../../utils/favourites"
+import { useDispatch } from "react-redux"
+import {
+    addToFavorites,
+    removeFromFavorites,
+    setFavorites,
+} from "../../features/favourites/favouriteSlice"
 
 const ProductCard = ({ product, type }) => {
+    const dispatch = useDispatch()
+    const [favourite, setFavourite] = useState()
+
+    const handleAddToFavourites = () => {
+        if (favourite) {
+            removeFavoriteFromLocalStorage(product?._id)
+            dispatch(removeFromFavorites(product?._id))
+            setFavourite(false)
+        } else {
+            addFavoriteToLocalStorage(product)
+            dispatch(addToFavorites(product))
+            setFavourite(true)
+        }
+    }
+
+    useEffect(() => {
+        if (isFavourite(product?._id)) {
+            setFavourite(true)
+        } else {
+            setFavourite(false)
+        }
+        dispatch(setFavorites(getFavoritesFromLocalStorage()))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [favourite])
     return (
         <div className='card card-compact bg-base-100 w-80 h-80 lg:w-96 lg:h-96 shadow-xl'>
             <figure className='h-1/2'>
@@ -16,12 +53,10 @@ const ProductCard = ({ product, type }) => {
                         <span>{moment(product?.createdAt).fromNow()}</span>
                     ) : product?.quantity > 0 ? (
                         <span className='text-green-700 animate-pulse'>
-                            In Stock
+                            {`${product?.quantity} items left`}
                         </span>
                     ) : (
-                        <span className='text-red-700 animate-pulse'>
-                            Out of Stock
-                        </span>
+                        <span className='text-red-700'>Out of Stock</span>
                     )}
                 </div>
                 <span className='-mt-3 text-red-950'>{product?.brand}</span>
@@ -42,11 +77,18 @@ const ProductCard = ({ product, type }) => {
                         </span>
                     </div>
                     <div className='flex gap-3'>
-                        <div className='tooltip' data-tip='favourits'>
-                            <FaRegHeart className='cursor-pointer w-5 h-5' />
-                            {/* <Link to={`/admin/update-product/${product.slug}`}>
-                                <MdEdit className='cursor-pointer text-blue-600 w-5 h-5' />
-                            </Link> */}
+                        <div className='tooltip' data-tip='favourite'>
+                            {favourite ? (
+                                <FaHeart
+                                    className='cursor-pointer fill-pink-700 w-5 h-5'
+                                    onClick={handleAddToFavourites}
+                                />
+                            ) : (
+                                <FaRegHeart
+                                    className='cursor-pointer w-5 h-5'
+                                    onClick={handleAddToFavourites}
+                                />
+                            )}
                         </div>
                         <div className='tooltip' data-tip='add to cart'>
                             <BsCart2 className='cursor-pointer w-5 h-5' />

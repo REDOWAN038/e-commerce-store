@@ -2,10 +2,14 @@ import { BsCart2 } from "react-icons/bs"
 import { FaRegHeart } from "react-icons/fa6"
 import Person from "../../assets/person.jpg"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { selectFavourites } from "../../features/favourites/selector"
 
 const UserNotLoggedIn = () => {
+    const favourites = useSelector(selectFavourites)
+
     return (
-        <div className='navbar bg-base-100 border-b'>
+        <div className='navbar bg-base-100 border-b fixed z-10'>
             <div className='flex-1'>
                 <Link to='/' className='btn btn-ghost text-xl'>
                     Store
@@ -35,6 +39,11 @@ const UserNotLoggedIn = () => {
                             <Link to='/wishlist'>
                                 <FaRegHeart className='h-5 w-5' />
                             </Link>
+                            {favourites.length > 0 && (
+                                <span className='badge badge-sm indicator-item'>
+                                    {favourites.length}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>

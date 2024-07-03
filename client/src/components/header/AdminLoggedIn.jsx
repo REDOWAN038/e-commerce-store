@@ -30,7 +30,7 @@ const AdminLoggedIn = () => {
         }
     }
     return (
-        <div className='navbar bg-base-100 border-b'>
+        <div className='navbar bg-base-100 border-b fixed z-10'>
             <div className='flex-1'>
                 <Link to='/' className='btn btn-ghost text-xl'>
                     Store

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const Hero = () => {
     return (
         <div
-            className='hero min-h-screen'
+            className='hero h-screen w-full -mt-[40px]'
             style={{
                 backgroundImage: `url(${import.meta.env.VITE_HERO_URL})`,
             }}
