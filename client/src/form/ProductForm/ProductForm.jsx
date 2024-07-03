@@ -98,7 +98,7 @@ const ProductForm = ({
     }, [])
 
     return (
-        <div className='flex items-center justify-center'>
+        <div className='flex items-center justify-center mt-16'>
             <form
                 className='flex flex-col gap-10 mx-2'
                 onSubmit={handleSubmit(onSubmit)}

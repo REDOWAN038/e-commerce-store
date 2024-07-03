@@ -8,6 +8,7 @@ import { logout } from "../../features/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 import Person from "../../assets/person.jpg"
 import { selectFavourites } from "../../features/favourites/selector"
+import Favourites from "../Favourites"
 
 const UserLoggedIn = () => {
     const dispatch = useDispatch()
@@ -76,9 +77,7 @@ const UserLoggedIn = () => {
                         className='btn btn-ghost btn-circle'
                     >
                         <div className='indicator'>
-                            <Link to='/wishlist'>
-                                <FaRegHeart className='h-5 w-5' />
-                            </Link>
+                            <FaRegHeart className='h-5 w-5' />
                             {favourites.length > 0 && (
                                 <span className='badge badge-sm indicator-item'>
                                     {favourites.length}
@@ -86,6 +85,23 @@ const UserLoggedIn = () => {
                             )}
                         </div>
                     </div>
+                    {favourites.length > 0 ? (
+                        <div
+                            tabIndex={0}
+                            className='card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-64 shadow'
+                        >
+                            <ul
+                                tabIndex={0}
+                                className='dropdown-content menu bg-base-100 z-[1] w-56 p-2 shadow overflow-y-auto'
+                            >
+                                {favourites.map((fav, idx) => (
+                                    <li key={idx}>
+                                        <Favourites fav={fav} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : null}
                 </div>
                 <div className='dropdown dropdown-end'>
                     <div

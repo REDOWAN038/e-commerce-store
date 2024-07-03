@@ -71,51 +71,56 @@ const UserLists = () => {
 
     return (
         <div className='overflow-x-auto'>
-            <h1 className='flex items-center justify-center text-xl mb-10'>
+            <h1 className='flex items-center justify-center text-xl mb-10 mt-16'>
                 All Users
             </h1>
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Admin</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users?.map((user, idx) => (
-                        <tr
-                            key={idx}
-                            className=' cursor-pointer hover:bg-gray-300'
-                        >
-                            <th>{idx + 1}</th>
-                            <td>{user?.name}</td>
-                            <td>{user?.email}</td>
-                            <td>
-                                {user?.isAdmin ? (
-                                    <GiCheckMark className='text-green-600 w-4 h-4' />
-                                ) : (
-                                    <FaXmark className='text-red-600 w-5 h-5' />
-                                )}
-                            </td>
-                            <td>
-                                {user?.isAdmin ? null : (
-                                    <div className='tooltip' data-tip='delete'>
-                                        <MdDelete
-                                            className='cursor-pointer text-red-600 w-5 h-5'
-                                            onClick={() =>
-                                                handleDelete(user._id)
-                                            }
-                                        />
-                                    </div>
-                                )}
-                            </td>
+            <div className='flex items-center justify-center mx-auto'>
+                <table className='table w-3/4'>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th>Action</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {users?.map((user, idx) => (
+                            <tr
+                                key={idx}
+                                className=' cursor-pointer hover:bg-gray-300'
+                            >
+                                <th>{idx + 1}</th>
+                                <td>{user?.name}</td>
+                                <td>{user?.email}</td>
+                                <td>
+                                    {user?.isAdmin ? (
+                                        <GiCheckMark className='text-green-600 w-4 h-4' />
+                                    ) : (
+                                        <FaXmark className='text-red-600 w-5 h-5' />
+                                    )}
+                                </td>
+                                <td>
+                                    {user?.isAdmin ? null : (
+                                        <div
+                                            className='tooltip'
+                                            data-tip='delete'
+                                        >
+                                            <MdDelete
+                                                className='cursor-pointer text-red-600 w-5 h-5'
+                                                onClick={() =>
+                                                    handleDelete(user._id)
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

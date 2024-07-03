@@ -1,15 +1,17 @@
 import { BsCart2 } from "react-icons/bs"
 import { FaHeart } from "react-icons/fa6"
-import { removeFavoriteFromLocalStorage } from "../utils/favourites"
+import {
+    getFavoritesFromLocalStorage,
+    removeFavoriteFromLocalStorage,
+} from "../utils/favourites"
 import { useDispatch } from "react-redux"
-import { removeFromFavorites } from "../features/favourites/favouriteSlice"
+import { setFavorites } from "../features/favourites/favouriteSlice"
 
 const Favourites = ({ fav }) => {
     const dispatch = useDispatch()
     const handleFavClick = () => {
-        console.log("hi ")
         removeFavoriteFromLocalStorage(fav?._id)
-        dispatch(removeFromFavorites(fav?._id))
+        dispatch(setFavorites(getFavoritesFromLocalStorage()))
     }
 
     return (

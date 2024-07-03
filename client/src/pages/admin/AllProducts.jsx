@@ -51,7 +51,7 @@ const AllProducts = () => {
 
     return (
         <div className='flex flex-col'>
-            <div className='flex justify-between mx-10 mb-10'>
+            <div className='flex justify-between mx-10 mb-10 mt-16'>
                 <h1 className='text-xl'>All Products ({totalProducts})</h1>
                 <Link to='/admin/add-product'>
                     <button className='btn btn-primary btn-sm md:btn-normal'>

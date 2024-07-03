@@ -131,7 +131,7 @@ const Categories = () => {
 
     return (
         <>
-            <div className='flex items-center justify-center mb-12'>
+            <div className='flex items-center justify-center mb-12 mt-16'>
                 <input
                     type='text'
                     placeholder='Category Name'
@@ -154,55 +154,59 @@ const Categories = () => {
                 <h1 className='flex items-center justify-center text-xl mb-10'>
                     All Categories
                 </h1>
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Category</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {categories?.map((category, idx) => (
-                            <tr
-                                key={idx}
-                                className=' cursor-pointer hover:bg-gray-300'
-                            >
-                                <th>{idx + 1}</th>
-                                <td>{category?.name}</td>
-                                <td>
-                                    <div className='flex gap-2'>
-                                        <div
-                                            className='tooltip'
-                                            data-tip='edit'
-                                        >
-                                            <MdEdit
-                                                className='cursor-pointer text-blue-600 w-5 h-5'
-                                                onClick={() =>
-                                                    handleEditInput(
-                                                        category.name,
-                                                        category.slug
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                        <div
-                                            className='tooltip'
-                                            data-tip='delete'
-                                        >
-                                            <MdDelete
-                                                className='cursor-pointer text-red-600 w-5 h-5'
-                                                onClick={() =>
-                                                    handleDelete(category.slug)
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                </td>
+                <div className='flex items-center justify-center mx-auto'>
+                    <table className='table w-2/3'>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Category</th>
+                                <th>Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {categories?.map((category, idx) => (
+                                <tr
+                                    key={idx}
+                                    className=' cursor-pointer hover:bg-gray-300'
+                                >
+                                    <th>{idx + 1}</th>
+                                    <td>{category?.name}</td>
+                                    <td>
+                                        <div className='flex gap-2'>
+                                            <div
+                                                className='tooltip'
+                                                data-tip='edit'
+                                            >
+                                                <MdEdit
+                                                    className='cursor-pointer text-blue-600 w-5 h-5'
+                                                    onClick={() =>
+                                                        handleEditInput(
+                                                            category.name,
+                                                            category.slug
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                            <div
+                                                className='tooltip'
+                                                data-tip='delete'
+                                            >
+                                                <MdDelete
+                                                    className='cursor-pointer text-red-600 w-5 h-5'
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            category.slug
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </>
     )

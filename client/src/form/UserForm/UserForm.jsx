@@ -32,7 +32,7 @@ const UserForm = ({ user, onSave, isLoading, setIsLoading }) => {
     }, [user, reset])
 
     return (
-        <div className='flex items-center justify-center'>
+        <div className='flex items-center justify-center mt-16'>
             <div className='card bg-base-100 shadow-2xl w-2/3 lg:w-1/3'>
                 <h1 className='flex justify-center mt-5 text-3xl'>
                     Update Profile
