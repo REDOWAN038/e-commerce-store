@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { MdDelete } from "react-icons/md"
 import { MdEdit } from "react-icons/md"
 import axios from "axios"
-import { showToast } from "../utils/toast"
+import { showToast } from "../../utils/toast"
 
 const AdminProductCard = ({ product }) => {
     const handleDelete = async (slug) => {

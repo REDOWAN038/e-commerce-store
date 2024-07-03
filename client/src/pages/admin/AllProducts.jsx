@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { showToast } from "../../utils/toast"
 import axios from "axios"
 import { Link } from "react-router-dom"
-import AdminProductCard from "../../components/AdminProductCard"
+import AdminProductCard from "../../components/Product/AdminProductCard"
 
 const AllProducts = () => {
     const [productData, setProductData] = useState([])
