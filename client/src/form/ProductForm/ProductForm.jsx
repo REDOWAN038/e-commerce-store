@@ -104,6 +104,7 @@ const ProductForm = ({
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <h1 className='flex justify-center text-3xl'>{`${method} Product`}</h1>
+                {/* product name and brand */}
                 <div className='flex flex-col sm:flex-row gap-4'>
                     <div className='w-full'>
                         <label className='label'>
@@ -130,10 +131,11 @@ const ProductForm = ({
                         />
                     </div>
                 </div>
+                {/* product price and quantity */}
                 <div className='flex gap-4'>
                     <div className='w-full'>
                         <label className='label'>
-                            <span className='label-text'>Price</span>
+                            <span className='label-text'>Price ($)</span>
                         </label>
                         <input
                             type='number'
@@ -156,6 +158,7 @@ const ProductForm = ({
                         />
                     </div>
                 </div>
+                {/* product desc. */}
                 <div>
                     <label className='label'>
                         <span className='label-text'>Product Description</span>
@@ -167,6 +170,7 @@ const ProductForm = ({
                         {...register("description")}
                     ></textarea>
                 </div>
+                {/* product category */}
                 <div className='w-full'>
                     <label className='label'>
                         <span className='label-text'>Product Category</span>
@@ -192,6 +196,7 @@ const ProductForm = ({
                         </select>
                     )}
                 </div>
+                {/* product images */}
                 <div>
                     <label className='label'>
                         <span className='label-text'>Product Images</span>
@@ -247,6 +252,7 @@ const ProductForm = ({
                         </span>
                     )}
                 </div>
+                {/* button */}
                 <div className='flex items-center justify-center'>
                     <button className='btn btn-primary' disabled={isLoading}>
                         {isLoading ? "Please Wait..." : `${method} Product`}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import ProductCard from "../../components/ProductCard"
 import { showToast } from "../../utils/toast"
 import axios from "axios"
 import { Link } from "react-router-dom"
+import AdminProductCard from "../../components/AdminProductCard"
 
 const AllProducts = () => {
     const [productData, setProductData] = useState([])
@@ -61,7 +61,7 @@ const AllProducts = () => {
             </div>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-5 mx-2'>
                 {productData.map((product, idx) => (
-                    <ProductCard key={idx} product={product} />
+                    <AdminProductCard key={idx} product={product} />
                 ))}
             </div>
             <div className='flex items-center justify-center mt-8 join'>
