@@ -5,7 +5,7 @@ const ProductDetails = ({ product }) => {
     const [numberOfItems, setNumberOfItems] = useState(1)
     return (
         <div className='flex flex-col lg:flex-row rounded-none px-20 py-5 w-full gap-4 border-b-2'>
-            <div className='flex items-center justify-center w-[400px] lg:w-[500px] h-[500px]'>
+            <div className='flex items-center justify-center w-[400px] md:w-[500px] h-[500px]'>
                 <div className='carousel w-full h-full'>
                     {product?.images?.map((image, idx) => (
                         <div key={idx} className='carousel-item w-full'>
@@ -20,7 +20,7 @@ const ProductDetails = ({ product }) => {
             </div>
             <div className='flex flex-col justify-between px-2 py-4 space-y-10 flex-1'>
                 <div className='flex flex-col space-y-1'>
-                    <div className='flex items-center gap-52 lg:gap-96'>
+                    <div className='flex items-center gap-52 md:gap-80 lg:gap-96'>
                         <h2 className='card-title'>{product?.name}</h2>
                         {product?.quantity > 0 ? (
                             <h1 className='text-green-700'>In Stock</h1>
