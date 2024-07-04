@@ -25,6 +25,14 @@ const App = () => {
                     }
                 />
                 <Route
+                    path='/product/details/:slug'
+                    element={
+                        <Layout>
+                            <Product />
+                        </Layout>
+                    }
+                />
+                <Route
                     path='/signin'
                     element={
                         <ProtectedRoute accessBy='unauthorized'>
@@ -40,16 +48,6 @@ const App = () => {
                         <ProtectedRoute accessBy='unauthorized'>
                             <Layout>
                                 <SignUp />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/product/details/:slug'
-                    element={
-                        <ProtectedRoute accessBy='unauthorized'>
-                            <Layout>
-                                <Product />
                             </Layout>
                         </ProtectedRoute>
                     }

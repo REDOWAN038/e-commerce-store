@@ -1,25 +1,37 @@
-import ReviewForm from "../../form/ReviewForm/ReviewForm"
-import Ratings from "../Ratings"
+import moment from "moment"
 import StarRating from "../StarRating"
+import Person from "../../assets/person.jpg"
 
-const ProductReviews = ({ product, ratingsCount }) => {
+const ProductReviews = ({ reviews }) => {
     return (
-        <div className='flex flex-col gap-10 px-10'>
-            <h1 className='text-2xl'>Reviews and Ratings</h1>
-            <div className='flex items-center justify-between'>
-                <div className='flex flex-col gap-1'>
-                    <h2 className='text-3xl font-bold'>{product?.rating}</h2>
-                    <StarRating rating={product?.rating} />
-                    <h2 className='text-base'>
-                        {product?.reviews?.length} Reviews
-                    </h2>
-                </div>
-                <div className=''>
-                    <ReviewForm />
-                </div>
-                <div className='w-1/3'>
-                    <Ratings ratingsCount={ratingsCount} />
-                </div>
+        <div className='border-b-2'>
+            <div className='flex flex-col gap-16 px-5 py-5 lg:px-10 lg:py-10 lg:mx-14'>
+                {reviews?.map((review, idx) => (
+                    <div key={idx} className='flex flex-col gap-3'>
+                        <div className='flex gap-4'>
+                            <div className='avatar'>
+                                <div className='w-12 border-2 rounded-full'>
+                                    <img src={Person} />
+                                </div>
+                            </div>
+                            <div className='flex flex-col'>
+                                <p className='text-black font-bold'>
+                                    <span className='text-gray-400'>By </span>
+                                    {review?.name}{" "}
+                                    <span className='text-gray-400'>
+                                        {moment(review?.createdAt).format(
+                                            "Do MMMM YYYY"
+                                        )}
+                                    </span>
+                                </p>
+                                <StarRating rating={review?.rating} />
+                            </div>
+                        </div>
+                        <p className='text-slate-900 text-base'>
+                            {review?.comment}
+                        </p>
+                    </div>
+                ))}
             </div>
         </div>
     )

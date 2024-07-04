@@ -4,6 +4,7 @@ import axios from "axios"
 import ProductDetails from "../../components/Product/ProductDetails"
 import { showToast } from "../../utils/toast"
 import ProductReviews from "../../components/Product/ProductReviews"
+import ProductReviewInfo from "../../components/Product/ProductReviewInfo"
 
 const Product = () => {
     const { slug } = useParams()
@@ -17,7 +18,6 @@ const Product = () => {
             )
 
             if (res?.data?.success) {
-                console.log("res ", res?.data?.payload)
                 setProduct(res?.data?.payload?.product)
                 setRatingsCount(res?.data?.payload?.ratingsCount)
             }
@@ -41,7 +41,8 @@ const Product = () => {
     return (
         <div className='flex flex-col mt-8 space-y-3'>
             <ProductDetails product={product} />
-            <ProductReviews product={product} ratingsCount={ratingsCount} />
+            <ProductReviewInfo product={product} ratingsCount={ratingsCount} />
+            <ProductReviews reviews={product?.reviews} />
         </div>
     )
 }
