@@ -40,7 +40,6 @@ const productSchema = new mongoose.Schema({
     brand: {
         type: String,
         required: [true, "product brand is required"],
-        lowercase: true,
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,

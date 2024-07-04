@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom"
 import { BsCart2 } from "react-icons/bs"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
-import { AiFillStar } from "react-icons/ai"
 import moment from "moment"
 import { useEffect, useState } from "react"
 import {
@@ -15,6 +15,7 @@ import {
     removeFromFavorites,
     setFavorites,
 } from "../../features/favourites/favouriteSlice"
+import StarRating from "../StarRating"
 
 const ProductCard = ({ product, type }) => {
     const dispatch = useDispatch()
@@ -48,7 +49,9 @@ const ProductCard = ({ product, type }) => {
             </figure>
             <div className='card-body'>
                 <div className='flex items-center justify-between'>
-                    <h2 className='card-title'>{product?.name}</h2>
+                    <Link to={`/product/details/${product?.slug}`}>
+                        <h2 className='card-title'>{product?.name}</h2>
+                    </Link>
                     {type === "New" ? (
                         <span>{moment(product?.createdAt).fromNow()}</span>
                     ) : product?.quantity > 0 ? (
@@ -61,14 +64,10 @@ const ProductCard = ({ product, type }) => {
                 </div>
                 <span className='-mt-3 text-red-950'>{product?.brand}</span>
                 {type === "Top" ? (
-                    <span className='flex'>
-                        {Array.from({ length: product?.rating }).map((idx) => (
-                            <AiFillStar key={idx} className='fill-yellow-400' />
-                        ))}
-                    </span>
+                    <StarRating rating={product?.rating} />
                 ) : null}
                 <p className='line-clamp-2 lg:line-clamp-3'>
-                    {product?.description}
+                    {product?.description.substring(0, 160)}...
                 </p>
                 <div className='flex items-center justify-between whitespace-nowrap gap-12'>
                     <div>

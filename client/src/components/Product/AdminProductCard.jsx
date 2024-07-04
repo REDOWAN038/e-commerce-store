@@ -37,10 +37,10 @@ const AdminProductCard = ({ product }) => {
 
     return (
         <div className='card lg:card-side bg-base-100 shadow-xl'>
-            <figure>
+            <figure className='flex items-center justify-center w-2/6'>
                 <img src={product?.images[0]} alt='Album' />
             </figure>
-            <div className='card-body'>
+            <div className='card-body flex-1'>
                 <h2 className='card-title'>{product?.name}</h2>
                 <p className='line-clamp-2'>{product?.description}</p>
                 <div className='flex items-center justify-between whitespace-nowrap gap-12'>

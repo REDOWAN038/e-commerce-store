@@ -10,6 +10,7 @@ import Categories from "./pages/admin/Categories"
 import AddProduct from "./pages/admin/AddProduct"
 import UpdateProduct from "./pages/admin/UpdateProduct"
 import AllProducts from "./pages/admin/AllProducts"
+import Product from "./pages/users/Product"
 
 const App = () => {
     return (
@@ -39,6 +40,16 @@ const App = () => {
                         <ProtectedRoute accessBy='unauthorized'>
                             <Layout>
                                 <SignUp />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/product/details/:slug'
+                    element={
+                        <ProtectedRoute accessBy='unauthorized'>
+                            <Layout>
+                                <Product />
                             </Layout>
                         </ProtectedRoute>
                     }

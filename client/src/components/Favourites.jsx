@@ -6,6 +6,7 @@ import {
 } from "../utils/favourites"
 import { useDispatch } from "react-redux"
 import { setFavorites } from "../features/favourites/favouriteSlice"
+import { Link } from "react-router-dom"
 
 const Favourites = ({ fav }) => {
     const dispatch = useDispatch()
@@ -24,11 +25,11 @@ const Favourites = ({ fav }) => {
                 </div>
             </div>
             <div className='flex flex-col flex-1'>
-                <h1 className='line-clamp-1'>{fav?.name}</h1>
+                <Link to={`/product/details/${fav?.slug}`}>
+                    <h1 className='line-clamp-1 font-bold'>{fav?.name}</h1>
+                </Link>
                 <div className='flex items-center justify-between'>
-                    <span className='flex text-sm font-bold'>
-                        {fav?.price}$
-                    </span>
+                    <span className='flex text-sm'>{fav?.price}$</span>
                     <div className='flex gap-2'>
                         <FaHeart
                             className='cursor-pointer fill-pink-700 w-4 h-4'
