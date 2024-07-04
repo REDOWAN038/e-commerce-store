@@ -3,10 +3,12 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import ProductDetails from "../../components/Product/ProductDetails"
 import { showToast } from "../../utils/toast"
+import ProductReviews from "../../components/Product/ProductReviews"
 
 const Product = () => {
     const { slug } = useParams()
     const [product, setProduct] = useState([])
+    const [ratingsCount, setRatingsCount] = useState([])
 
     const getProductDetails = async () => {
         try {
@@ -15,7 +17,9 @@ const Product = () => {
             )
 
             if (res?.data?.success) {
+                console.log("res ", res?.data?.payload)
                 setProduct(res?.data?.payload?.product)
+                setRatingsCount(res?.data?.payload?.ratingsCount)
             }
         } catch (error) {
             showToast(error?.response?.data?.message, "error")
@@ -35,8 +39,9 @@ const Product = () => {
     }, [])
 
     return (
-        <div className='flex flex-col mt-8'>
+        <div className='flex flex-col mt-8 space-y-3'>
             <ProductDetails product={product} />
+            <ProductReviews product={product} ratingsCount={ratingsCount} />
         </div>
     )
 }

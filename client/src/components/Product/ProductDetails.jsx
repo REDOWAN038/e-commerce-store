@@ -4,7 +4,7 @@ import StarRating from "../StarRating"
 const ProductDetails = ({ product }) => {
     const [numberOfItems, setNumberOfItems] = useState(1)
     return (
-        <div className='flex rounded-none px-20 py-5 w-full gap-4'>
+        <div className='flex rounded-none px-20 py-5 w-full gap-4 border-b-2'>
             <div className='flex items-center justify-center w-[500px] h-[500px]'>
                 <div className='carousel w-full h-full'>
                     {product?.images?.map((image, idx) => (

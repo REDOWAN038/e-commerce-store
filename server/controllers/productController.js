@@ -1,5 +1,6 @@
 const slugify = require("slugify")
 const createError = require("http-errors")
+const mongoose = require('mongoose');
 
 const productModel = require("../models/productModel")
 const asyncHandler = require("../handler/asyncHandler")
@@ -114,11 +115,28 @@ const hanldeGetSingleProduct = asyncHandler(async (req, res, next) => {
         return next(createError(404, "no product found"))
     }
 
+
+    const ratingsCount = await productModel.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(product._id) } },
+        { $unwind: "$reviews" },
+        {
+            $group: {
+                _id: "$reviews.rating",
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort: { _id: -1 } // Sort by rating in descending order (5 to 1)
+        }
+    ]);
+
+
     return successResponse(res, {
         statusCode: 200,
         message: "product returned successfully",
         payload: {
-            product
+            product,
+            ratingsCount
         }
     })
 })
