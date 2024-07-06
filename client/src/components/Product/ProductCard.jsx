@@ -54,7 +54,7 @@ const ProductCard = ({ product, type }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [favourite])
     return (
-        <div className='card card-compact bg-base-100 w-80 h-80 lg:w-96 lg:h-96 shadow-xl'>
+        <div className='card card-compact bg-base-100 w-80 h-80 lg:w-80 lg:h-96 shadow-xl'>
             <figure className='h-1/2'>
                 <img src={product?.images[0]} alt={product?.name} />
             </figure>
