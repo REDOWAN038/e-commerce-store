@@ -50,12 +50,28 @@ const handleGetAllProducts = asyncHandler(async (req, res, next) => {
     const limit = Number(req.query.limit) || 12
     const query = constructQuery(req.query)
 
+    let sortOptions = {};
+    switch (req.query.sortOption) {
+        case "rating":
+            sortOptions = { rating: -1 };
+            break;
+        case "priceAsc":
+            sortOptions = { price: 1 };
+            break;
+        case "priceDesc":
+            sortOptions = { price: -1 };
+            break;
+        default:
+            sortOptions = { rating: -1 };
+            break;
+    }
+
     const products = await productModel
         .find(query)
         .populate("category")
         .limit(limit)
         .skip((page - 1) * limit)
-        .sort({ createdAt: -1 })
+        .sort(sortOptions)
 
     if (!products || products.length === 0) {
         return next(createError(404, "no products found"))

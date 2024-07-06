@@ -17,7 +17,7 @@ const CategoryFilter = ({ categories }) => {
     }
 
     return (
-        <div className='border-b border-slate-300 pb-5'>
+        <div className='border-b border-slate-300 pt-5 pb-5'>
             <h4 className='text-sm lg:text-base font-semibold mb-2'>
                 Categories
             </h4>

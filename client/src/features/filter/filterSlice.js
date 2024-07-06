@@ -12,10 +12,10 @@ export const filterSlice = createSlice({
     initialState,
     reducers: {
         setCategories: (state, action) => {
-            state.stars = action.payload
+            state.categories = action.payload
         },
         setBrands: (state, action) => {
-            state.hotelTypes = action.payload
+            state.brands = action.payload
         },
         setMaxPrice: (state, action) => {
             state.maxPrice = action.payload

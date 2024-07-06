@@ -5,12 +5,23 @@ import { showToast } from "../../utils/toast"
 import BrandFilter from "../../components/BrandFilter"
 import ProductCard from "../../components/Product/ProductCard"
 import PriceFilter from "../../components/PriceFilter"
+import SortFilter from "../../components/SortFilrer"
+import { useSelector } from "react-redux"
+import { selectAllFilters } from "../../features/filter/selector"
 
 const Shop = () => {
     const [categories, setCategories] = useState([])
     const [productData, setProductData] = useState([])
+    const [totalProducts, setTotalProducts] = useState()
     const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
     const [uniqueBrands, setUniqueBrands] = useState([])
+    const filter = useSelector(selectAllFilters)
+
+    const pageNumbers = []
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i)
+    }
 
     const getAllCategories = async () => {
         try {
@@ -29,7 +40,18 @@ const Shop = () => {
     const getAllProducts = async () => {
         try {
             const queryParams = new URLSearchParams()
+
             queryParams.append("page", page || 1)
+            queryParams.append("maxPrice", filter.maxPrice || "")
+            queryParams.append("sortOption", filter.sortOption || "")
+
+            filter.categories?.forEach((category) =>
+                queryParams.append("categories", category)
+            )
+
+            filter.brands?.forEach((brand) =>
+                queryParams.append("brands", brand)
+            )
 
             const res = await axios.get(
                 `${
@@ -39,8 +61,8 @@ const Shop = () => {
 
             if (res?.data?.success) {
                 setProductData(res?.data?.payload?.products)
-                // setTotalProducts(res?.data?.payload?.pagination?.totalProducts)
-                // setTotalPages(res?.data?.payload?.pagination?.totalPages)
+                setTotalProducts(res?.data?.payload?.pagination?.totalProducts)
+                setTotalPages(res?.data?.payload?.pagination?.totalPages)
             }
         } catch (error) {
             showToast("Something Went Wrong", "error")
@@ -58,7 +80,7 @@ const Shop = () => {
         }
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [filter])
 
     useEffect(() => {
         // Extract unique brands whenever productData changes
@@ -71,15 +93,39 @@ const Shop = () => {
         <div className='flex mt-5 px-10 py-10 gap-10'>
             {/* filter */}
             <div className='flex flex-col w-1/6 px-3 py-3 h-fit bg-white rounded-md'>
+                <h3 className='text-lg font-semibold border-b border-slate-300 pb-5'>
+                    Filter by:
+                </h3>
                 <CategoryFilter categories={categories} />
                 <BrandFilter brands={uniqueBrands} />
                 <PriceFilter />
             </div>
             {/* products */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto'>
-                {productData.map((product, idx) => (
-                    <ProductCard key={idx} product={product} type='Top' />
-                ))}
+            <div className='flex flex-col gap-5'>
+                <div className='flex items-center justify-between'>
+                    <span className='text-xl font-bold'>
+                        {totalProducts} Products found
+                    </span>
+                    <div className='lg:flex'>
+                        <SortFilter />
+                    </div>
+                </div>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto'>
+                    {productData.map((product, idx) => (
+                        <ProductCard key={idx} product={product} type='Top' />
+                    ))}
+                </div>
+                <div className='flex items-center justify-center mt-8 join'>
+                    {pageNumbers.map((idx, i) => (
+                        <button
+                            className='join-item btn bg-sky-100'
+                            key={idx}
+                            onClick={() => setPage(i + 1)}
+                        >
+                            {i + 1}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     )

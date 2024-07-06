@@ -58,28 +58,28 @@ const ProductCard = ({ product, type }) => {
             <figure className='h-1/2'>
                 <img src={product?.images[0]} alt={product?.name} />
             </figure>
-            <div className='card-body'>
-                <div className='flex items-center justify-between'>
-                    <Link to={`/product/details/${product?.slug}`}>
-                        <h2 className='card-title'>{product?.name}</h2>
-                    </Link>
-                    {type === "New" ? (
-                        <span>{moment(product?.createdAt).fromNow()}</span>
-                    ) : product?.quantity > 0 ? (
-                        <span className='text-green-700 animate-pulse'>
-                            {`${product?.quantity} items left`}
-                        </span>
-                    ) : (
-                        <span className='text-red-700'>Out of Stock</span>
-                    )}
+            <div className='card-body flex justify-between'>
+                <div className='flex flex-col justify-between gap-2'>
+                    <div className='flex items-center justify-between'>
+                        <Link to={`/product/details/${product?.slug}`}>
+                            <h2 className='card-title'>{product?.name}</h2>
+                        </Link>
+                        {type === "New" ? (
+                            <span>{moment(product?.createdAt).fromNow()}</span>
+                        ) : product?.quantity > 0 ? (
+                            <span className='text-green-700 animate-pulse'>
+                                {`${product?.quantity} items left`}
+                            </span>
+                        ) : (
+                            <span className='text-red-700'>Out of Stock</span>
+                        )}
+                    </div>
+                    <span className='-mt-3 text-red-950'>{product?.brand}</span>
+                    {type === "Top" ? (
+                        <StarRating rating={product?.rating} />
+                    ) : null}
                 </div>
-                <span className='-mt-3 text-red-950'>{product?.brand}</span>
-                {type === "Top" ? (
-                    <StarRating rating={product?.rating} />
-                ) : null}
-                <p className='line-clamp-2 lg:line-clamp-3'>
-                    {product?.description.substring(0, 160)}...
-                </p>
+                <span className='line-clamp-3'>{product?.description}</span>
                 <div className='flex items-center justify-between whitespace-nowrap gap-12'>
                     <div>
                         <span className='text-sm font-bold'>
