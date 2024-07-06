@@ -11,6 +11,7 @@ import AddProduct from "./pages/admin/AddProduct"
 import UpdateProduct from "./pages/admin/UpdateProduct"
 import AllProducts from "./pages/admin/AllProducts"
 import Product from "./pages/users/Product"
+import Cart from "./pages/users/Cart"
 
 const App = () => {
     return (
@@ -29,6 +30,14 @@ const App = () => {
                     element={
                         <Layout>
                             <Product />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path='/cart'
+                    element={
+                        <Layout>
+                            <Cart />
                         </Layout>
                     }
                 />

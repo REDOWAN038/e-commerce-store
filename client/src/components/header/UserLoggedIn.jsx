@@ -9,10 +9,12 @@ import { useNavigate } from "react-router-dom"
 import Person from "../../assets/person.jpg"
 import { selectFavourites } from "../../features/favourites/selector"
 import Favourites from "../Favourites"
+import { selectCartItems } from "../../features/cart/selector"
 
 const UserLoggedIn = () => {
     const dispatch = useDispatch()
     const favourites = useSelector(selectFavourites)
+    const cartItems = useSelector(selectCartItems)
     const navigate = useNavigate()
 
     const handleLogout = async () => {
@@ -47,12 +49,28 @@ const UserLoggedIn = () => {
                         className='btn btn-ghost btn-circle'
                     >
                         <div className='indicator'>
-                            {/* <Link to='/cart'> */}
-                            <BsCart2 className='h-5 w-5' />
-                            {/* </Link> */}
-                            <span className='badge badge-sm indicator-item'>
-                                8
-                            </span>
+                            {cartItems.length > 0 ? (
+                                <>
+                                    <Link to='/cart'>
+                                        <BsCart2 className='h-5 w-5' />
+                                    </Link>
+                                    <span className='badge badge-sm indicator-item'>
+                                        {cartItems.length}
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <BsCart2
+                                        className='h-5 w-5'
+                                        onClick={() =>
+                                            showToast(
+                                                "Your Cart is Empty",
+                                                "error"
+                                            )
+                                        }
+                                    />
+                                </>
+                            )}
                         </div>
                     </div>
                     <div

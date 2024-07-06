@@ -5,12 +5,15 @@ import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { selectFavourites } from "../../features/favourites/selector"
 import Favourites from "../Favourites"
+import { selectCartItems } from "../../features/cart/selector"
+import { showToast } from "../../utils/toast"
 
 const UserNotLoggedIn = () => {
     const favourites = useSelector(selectFavourites)
+    const cartItems = useSelector(selectCartItems)
 
     return (
-        <div className='navbar bg-base-100 border-b fixed z-10'>
+        <div className='navbar lg:px-10 bg-base-100 border-b fixed z-10'>
             <div className='flex-1'>
                 <Link to='/' className='btn btn-ghost text-xl'>
                     Store
@@ -24,9 +27,28 @@ const UserNotLoggedIn = () => {
                         className='btn btn-ghost btn-circle'
                     >
                         <div className='indicator'>
-                            {/* <Link to='/cart'> */}
-                            <BsCart2 className='h-5 w-5' />
-                            {/* </Link> */}
+                            {cartItems.length > 0 ? (
+                                <>
+                                    <Link to='/cart'>
+                                        <BsCart2 className='h-5 w-5' />
+                                    </Link>
+                                    <span className='badge badge-sm indicator-item'>
+                                        {cartItems.length}
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <BsCart2
+                                        className='h-5 w-5'
+                                        onClick={() =>
+                                            showToast(
+                                                "Your Cart is Empty",
+                                                "error"
+                                            )
+                                        }
+                                    />
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

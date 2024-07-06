@@ -4,9 +4,9 @@ import StarRating from "../StarRating"
 const ProductDetails = ({ product }) => {
     const [numberOfItems, setNumberOfItems] = useState(1)
     return (
-        <div className='flex flex-col lg:flex-row rounded-none px-20 py-5 w-full gap-4 border-b-2'>
+        <div className='flex flex-col items-center justify-center lg:flex-row rounded-none lg:px-20 py-5 w-full gap-4 border-b-2'>
             <div className='flex items-center justify-center w-[400px] md:w-[500px] h-[500px]'>
-                <div className='carousel w-full h-full'>
+                <div className='carousel w-full h-full flex items-center'>
                     {product?.images?.map((image, idx) => (
                         <div key={idx} className='carousel-item w-full'>
                             <img
@@ -20,7 +20,7 @@ const ProductDetails = ({ product }) => {
             </div>
             <div className='flex flex-col justify-between px-2 py-4 space-y-10 flex-1'>
                 <div className='flex flex-col space-y-1'>
-                    <div className='flex items-center gap-52 md:gap-80 lg:gap-96'>
+                    <div className='flex items-center gap-60 md:gap-80 lg:gap-96'>
                         <h2 className='card-title'>{product?.name}</h2>
                         {product?.quantity > 0 ? (
                             <h1 className='text-green-700'>In Stock</h1>
@@ -58,13 +58,13 @@ const ProductDetails = ({ product }) => {
                             <div className='flex items-center gap-3'>
                                 <input
                                     type='number'
+                                    min={1}
+                                    max={product?.quantity}
+                                    className='input input-bordered w-36'
                                     value={numberOfItems}
                                     onChange={(e) =>
                                         setNumberOfItems(e.target.value)
                                     }
-                                    min={1}
-                                    max={product?.quantity}
-                                    className='input input-bordered w-36'
                                 />
                                 <button className='btn btn-primary w-28'>
                                     Add to Cart

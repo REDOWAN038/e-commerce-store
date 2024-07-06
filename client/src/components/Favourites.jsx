@@ -7,12 +7,23 @@ import {
 import { useDispatch } from "react-redux"
 import { setFavorites } from "../features/favourites/favouriteSlice"
 import { Link } from "react-router-dom"
+import { addToCart } from "../features/cart/cartSlice"
+import { showToast } from "../utils/toast"
 
 const Favourites = ({ fav }) => {
     const dispatch = useDispatch()
     const handleFavClick = () => {
         removeFavoriteFromLocalStorage(fav?._id)
         dispatch(setFavorites(getFavoritesFromLocalStorage()))
+    }
+
+    const handleAddToCart = (orderQuantity) => {
+        if (fav?.quantity > 0) {
+            dispatch(addToCart({ ...fav, orderQuantity }))
+            showToast("Product Added to Cart", "success")
+        } else {
+            showToast("Out of Stock", "error")
+        }
     }
 
     return (
@@ -35,7 +46,10 @@ const Favourites = ({ fav }) => {
                             className='cursor-pointer fill-pink-700 w-4 h-4'
                             onClick={handleFavClick}
                         />
-                        <BsCart2 className='cursor-pointer w-4 h-4' />
+                        <BsCart2
+                            className='cursor-pointer w-4 h-4'
+                            onClick={() => handleAddToCart(1)}
+                        />
                     </div>
                 </div>
             </div>

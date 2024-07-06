@@ -16,6 +16,8 @@ import {
     setFavorites,
 } from "../../features/favourites/favouriteSlice"
 import StarRating from "../StarRating"
+import { addToCart } from "../../features/cart/cartSlice"
+import { showToast } from "../../utils/toast"
 
 const ProductCard = ({ product, type }) => {
     const dispatch = useDispatch()
@@ -30,6 +32,15 @@ const ProductCard = ({ product, type }) => {
             addFavoriteToLocalStorage(product)
             dispatch(addToFavorites(product))
             setFavourite(true)
+        }
+    }
+
+    const handleAddToCart = (orderQuantity) => {
+        if (product?.quantity > 0) {
+            dispatch(addToCart({ ...product, orderQuantity }))
+            showToast("Product Added to Cart", "success")
+        } else {
+            showToast("Out of Stock", "error")
         }
     }
 
@@ -90,11 +101,10 @@ const ProductCard = ({ product, type }) => {
                             )}
                         </div>
                         <div className='tooltip' data-tip='add to cart'>
-                            <BsCart2 className='cursor-pointer w-5 h-5' />
-                            {/* <MdDelete
-                                className='cursor-pointer text-red-600 w-5 h-5'
-                                onClick={() => handleDelete(product.slug)}
-                            /> */}
+                            <BsCart2
+                                className='cursor-pointer w-5 h-5'
+                                onClick={() => handleAddToCart(1)}
+                            />
                         </div>
                     </div>
                 </div>

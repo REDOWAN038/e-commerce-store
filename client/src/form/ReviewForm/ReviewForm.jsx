@@ -11,6 +11,7 @@ const ReviewForm = () => {
     const user = useSelector(selectUser)
     const { slug } = useParams()
     const [rating, setRating] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
     const {
         register,
         handleSubmit,
@@ -19,6 +20,7 @@ const ReviewForm = () => {
 
     const onSubmit = async (data) => {
         try {
+            setIsLoading(true)
             const reviewData = { ...data, rating }
             const res = await axios.post(
                 `${
@@ -32,9 +34,11 @@ const ReviewForm = () => {
             )
 
             if (res?.data?.success) {
+                setIsLoading(false)
                 window.location.reload()
             }
         } catch (error) {
+            setIsLoading(false)
             if (
                 error?.response?.status === 404 ||
                 error?.response?.status === 403
@@ -68,8 +72,12 @@ const ReviewForm = () => {
             </div>
 
             {user ? (
-                <button type='submit' className='btn btn-primary btn-sm'>
-                    Submit
+                <button
+                    type='submit'
+                    className='btn btn-primary btn-sm'
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Please Wait..." : "Submit"}
                 </button>
             ) : (
                 <Link to='/signin'>

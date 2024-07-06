@@ -1,8 +1,6 @@
 import RatingBar from "./RatingBar"
 
-const Ratings = ({ ratingsCount }) => {
-    const maxCount = Math.max(...ratingsCount.map((r) => r.count))
-
+const Ratings = ({ numOfReviews, ratingsCount }) => {
     return (
         <div className='space-y-2'>
             {[5, 4, 3, 2, 1].map((rating) => {
@@ -13,7 +11,7 @@ const Ratings = ({ ratingsCount }) => {
                         key={rating}
                         rating={rating}
                         count={count}
-                        maxCount={maxCount}
+                        numOfReviews={numOfReviews}
                     />
                 )
             })}

@@ -1,7 +1,7 @@
 import { FaStar, FaRegStar } from "react-icons/fa"
 
-const RatingBar = ({ rating, count, maxCount }) => {
-    const percentage = (count / maxCount) * 100
+const RatingBar = ({ rating, count, numOfReviews }) => {
+    const percentage = (count / numOfReviews) * 100
 
     return (
         <div className='flex items-center space-x-2'>
