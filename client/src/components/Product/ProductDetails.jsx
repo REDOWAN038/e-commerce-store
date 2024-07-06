@@ -1,8 +1,22 @@
 import { useState } from "react"
 import StarRating from "../StarRating"
+import { useDispatch } from "react-redux"
+import { addToCart } from "../../features/cart/cartSlice"
+import { showToast } from "../../utils/toast"
 
 const ProductDetails = ({ product }) => {
-    const [numberOfItems, setNumberOfItems] = useState(1)
+    const dispatch = useDispatch()
+    const [orderQuantity, setOrderQuantity] = useState(1)
+
+    const handleAddToCart = () => {
+        if (product?.quantity > 0) {
+            dispatch(addToCart({ ...product, orderQuantity }))
+            showToast("Product Added to Cart", "success")
+        } else {
+            showToast("Out of Stock", "error")
+        }
+    }
+
     return (
         <div className='flex flex-col items-center justify-center lg:flex-row rounded-none lg:px-20 py-5 w-full gap-4 border-b-2'>
             <div className='flex items-center justify-center w-[400px] md:w-[500px] h-[500px]'>
@@ -61,12 +75,15 @@ const ProductDetails = ({ product }) => {
                                     min={1}
                                     max={product?.quantity}
                                     className='input input-bordered w-36'
-                                    value={numberOfItems}
+                                    value={orderQuantity}
                                     onChange={(e) =>
-                                        setNumberOfItems(e.target.value)
+                                        setOrderQuantity(e.target.value)
                                     }
                                 />
-                                <button className='btn btn-primary w-28'>
+                                <button
+                                    className='btn btn-primary w-28'
+                                    onClick={() => handleAddToCart()}
+                                >
                                     Add to Cart
                                 </button>
                             </div>
