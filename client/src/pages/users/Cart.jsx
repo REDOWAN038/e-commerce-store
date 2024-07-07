@@ -29,9 +29,9 @@ const Cart = () => {
     }
 
     return (
-        <div className='flex'>
+        <div className='flex flex-col lg:flex-row'>
             {/* about product */}
-            <div className='flex flex-col bg-white shadow-sm w-8/12 mx-auto gap-6 px-10 py-5 mt-10'>
+            <div className='flex flex-col bg-white shadow-sm w-11/12 lg:w-8/12 mx-auto gap-6 px-10 py-5 mt-10'>
                 <div className='flex items-center justify-between pb-4 border-b-2'>
                     <h2 className='card-title'>{`Total Items : (${cartItems.length})`}</h2>
                     <h2 className='text-xl text-green-700'>{`Your Total : $${itemsPrice}`}</h2>
@@ -42,24 +42,46 @@ const Cart = () => {
                         className='flex items-center justify-between border-b-2 pb-4'
                     >
                         {/* image and info */}
-                        <div className='flex gap-3'>
+                        <div className='flex gap-6 md:gap-3'>
                             <div className='avatar'>
-                                <div className='w-32 rounded'>
+                                <div className='w-48 md:w-40 lg:w-32 rounded'>
                                     <img src={item.images[0]} />
                                 </div>
                             </div>
                             <div className='flex flex-col justify-between'>
                                 <Link to={`/product/details/${item.slug}`}>
-                                    <h2 className='card-title'>{item.name}</h2>
+                                    <h2 className='text-sm md:text-base card-title'>
+                                        {item.name}
+                                    </h2>
                                 </Link>
-                                <p className=' text-red-950'>{item.brand}</p>
+                                <p className='text-sm md:text-base text-red-950'>
+                                    {item.brand}
+                                </p>
+                                <h2 className='text-sm md:text-base card-title lg:hidden'>
+                                    ${getTotal(item.price, item.orderQuantity)}
+                                </h2>
                                 <FaRegTrashAlt
-                                    className='cursor-pointer'
+                                    className='text-sm md:text-base cursor-pointer'
                                     onClick={() =>
                                         handleRemoveFromCart(item._id)
                                     }
                                 />
-                                <p className=' text-red-500'>{`Only ${item.quantity} items left`}</p>
+                                <p className='text-sm md:text-base text-red-500'>{`Only ${item.quantity} items left`}</p>
+                                <input
+                                    type='number'
+                                    min={1}
+                                    max={item.quantity}
+                                    className='md:hidden input input-bordered input-sm w-36'
+                                    value={item.orderQuantity}
+                                    onChange={(e) =>
+                                        dispatch(
+                                            addToCart({
+                                                ...item,
+                                                orderQuantity: e.target.value,
+                                            })
+                                        )
+                                    }
+                                />
                             </div>
                         </div>
                         {/* amount */}
@@ -67,7 +89,7 @@ const Cart = () => {
                             type='number'
                             min={1}
                             max={item.quantity}
-                            className='input input-bordered w-36'
+                            className='hidden md:flex input input-bordered w-36'
                             value={item.orderQuantity}
                             onChange={(e) =>
                                 dispatch(
@@ -79,35 +101,35 @@ const Cart = () => {
                             }
                         />
                         {/* total */}
-                        <h2 className='card-title'>
+                        <h2 className='card-title hidden lg:flex'>
                             ${getTotal(item.price, item.orderQuantity)}
                         </h2>
                     </div>
                 ))}
                 <Link to='/shipping'>
-                    <button className='btn btn-primary'>
+                    <button className='btn btn-primary w-full'>
                         Proceed to CheckOut
                     </button>
                 </Link>
             </div>
             {/* checkout summary */}
-            <div className='flex flex-col space-y-4 bg-white shadow-sm w-3/12 h-fit mx-auto px-10 py-5 mt-10'>
+            <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-3/12 h-fit mx-auto px-10 py-5 mt-10'>
                 <h1 className='card-title border-b-2 pb-4'>Checkout Summary</h1>
                 <div className='flex items-center justify-between'>
                     <h2>Subotal</h2>
-                    <h2>{itemsPrice}</h2>
+                    <h2>${itemsPrice}</h2>
                 </div>
                 <div className='flex items-center justify-between'>
                     <h2>Shipping</h2>
-                    <h2>{shippingPrice}</h2>
+                    <h2>${shippingPrice}</h2>
                 </div>
                 <div className='flex items-center justify-between'>
                     <h2>Tax</h2>
-                    <h2>{taxPrice}</h2>
+                    <h2>${taxPrice}</h2>
                 </div>
                 <div className='flex items-center justify-between'>
                     <h2 className='card-title'>Total</h2>
-                    <h2>{totalPrice}</h2>
+                    <h2 className='card-title'>${totalPrice}</h2>
                 </div>
             </div>
         </div>

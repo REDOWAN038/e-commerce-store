@@ -47,7 +47,7 @@ const handleCreateProduct = asyncHandler(async (req, res, next) => {
 // get all products
 const handleGetAllProducts = asyncHandler(async (req, res, next) => {
     const page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 12
+    const limit = Number(req.query.limit) || 15
     const query = constructQuery(req.query)
 
     let sortOptions = {};

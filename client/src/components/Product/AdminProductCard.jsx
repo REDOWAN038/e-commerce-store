@@ -37,8 +37,8 @@ const AdminProductCard = ({ product }) => {
 
     return (
         <div className='card lg:card-side bg-base-100 shadow-xl'>
-            <figure className='flex items-center justify-center w-2/6'>
-                <img src={product?.images[0]} alt='Album' />
+            <figure className='flex items-center justify-center lg:w-2/6'>
+                <img src={product?.images[0]} alt={product?.name} />
             </figure>
             <div className='card-body flex-1'>
                 <h2 className='card-title'>{product?.name}</h2>

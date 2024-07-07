@@ -15,7 +15,7 @@ const SortFilter = () => {
             <select
                 value={sortOption}
                 onChange={handleChange}
-                className='p-2 border rounded-md w-1/2 lg:w-full'
+                className='p-2 border rounded-md w-44 lg:w-full'
             >
                 <option value=''>Sort By</option>
                 <option value='rating'>Top Rated</option>

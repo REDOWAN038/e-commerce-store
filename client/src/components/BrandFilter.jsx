@@ -3,15 +3,12 @@ import { selectBrands } from "../features/filter/selector"
 import { setBrands } from "../features/filter/filterSlice"
 
 const BrandFilter = ({ brands }) => {
-    const selectedBrands = useSelector(selectBrands)
+    const selectedBrand = useSelector(selectBrands)
     const dispatch = useDispatch()
 
     const handleChange = (e) => {
         const brand = e.target.value
-        const updatedBrands = e.target.checked
-            ? [...selectedBrands, brand]
-            : selectedBrands.filter((prevBrand) => prevBrand !== brand)
-        dispatch(setBrands(updatedBrands))
+        dispatch(setBrands(brand))
     }
 
     return (
@@ -21,10 +18,10 @@ const BrandFilter = ({ brands }) => {
                 {brands?.map((brand, idx) => (
                     <label key={idx} className='flex items-center space-x-2'>
                         <input
-                            type='checkbox'
+                            type='radio'
                             className='rounded'
                             value={brand}
-                            checked={selectedBrands.includes(brand)}
+                            checked={selectedBrand === brand}
                             onChange={handleChange}
                         />
                         <span className='text-sm lg:text-base'>{brand}</span>

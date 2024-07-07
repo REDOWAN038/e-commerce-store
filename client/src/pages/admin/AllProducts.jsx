@@ -2,7 +2,9 @@ import { useEffect, useState } from "react"
 import { showToast } from "../../utils/toast"
 import axios from "axios"
 import { Link } from "react-router-dom"
-import AdminProductCard from "../../components/Product/AdminProductCard"
+// import AdminProductCard from "../../components/Product/AdminProductCard"
+import Pagination from "../../components/Pagination"
+import ProductCard from "../../components/Product/ProductCard"
 
 const AllProducts = () => {
     const [productData, setProductData] = useState([])
@@ -10,9 +12,8 @@ const AllProducts = () => {
     const [totalPages, setTotalPages] = useState(0)
     const [page, setPage] = useState(1)
 
-    const pageNumbers = []
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i)
+    const handlePageClick = (val) => {
+        setPage(val)
     }
 
     const getAllProducts = async () => {
@@ -59,22 +60,21 @@ const AllProducts = () => {
                     </button>
                 </Link>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-5 mx-2'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-auto'>
                 {productData.map((product, idx) => (
-                    <AdminProductCard key={idx} product={product} />
-                ))}
-            </div>
-            <div className='flex items-center justify-center mt-8 join'>
-                {pageNumbers.map((idx, i) => (
-                    <button
-                        className='join-item btn'
+                    <ProductCard
                         key={idx}
-                        onClick={() => setPage(i + 1)}
-                    >
-                        {i + 1}
-                    </button>
+                        product={product}
+                        type='Top'
+                        user='Admin'
+                    />
                 ))}
             </div>
+            <Pagination
+                totalPages={totalPages}
+                onPageClick={handlePageClick}
+                currentPage={page}
+            />
         </div>
     )
 }

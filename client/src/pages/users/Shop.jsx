@@ -8,6 +8,8 @@ import PriceFilter from "../../components/PriceFilter"
 import SortFilter from "../../components/SortFilrer"
 import { useSelector } from "react-redux"
 import { selectAllFilters } from "../../features/filter/selector"
+import FilterModal from "../../modal/FilterModal"
+import Pagination from "../../components/Pagination"
 
 const Shop = () => {
     const [categories, setCategories] = useState([])
@@ -17,10 +19,14 @@ const Shop = () => {
     const [totalPages, setTotalPages] = useState(0)
     const [uniqueBrands, setUniqueBrands] = useState([])
     const filter = useSelector(selectAllFilters)
+    const [isOpen, setIsOpen] = useState(false)
 
-    const pageNumbers = []
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i)
+    const toggleModal = () => {
+        setIsOpen(!isOpen)
+    }
+
+    const handlePageClick = (val) => {
+        setPage(val)
     }
 
     const getAllCategories = async () => {
@@ -42,15 +48,20 @@ const Shop = () => {
             const queryParams = new URLSearchParams()
 
             queryParams.append("page", page || 1)
-            queryParams.append("maxPrice", filter.maxPrice || "")
-            queryParams.append("sortOption", filter.sortOption || "")
+            if (filter.maxPrice) {
+                queryParams.append("maxPrice", filter.maxPrice)
+            }
+
+            if (filter.sortOption) {
+                queryParams.append("sortOption", filter.sortOption || "")
+            }
+
+            if (filter.brands) {
+                queryParams.append("brand", filter.brands)
+            }
 
             filter.categories?.forEach((category) =>
                 queryParams.append("categories", category)
-            )
-
-            filter.brands?.forEach((brand) =>
-                queryParams.append("brands", brand)
             )
 
             const res = await axios.get(
@@ -80,7 +91,7 @@ const Shop = () => {
         }
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter])
+    }, [filter, page])
 
     useEffect(() => {
         // Extract unique brands whenever productData changes
@@ -90,9 +101,9 @@ const Shop = () => {
     }, [productData])
 
     return (
-        <div className='flex mt-5 px-10 py-10 gap-10'>
+        <div className='flex justify-center mt-5 px-10 py-10 gap-10'>
             {/* filter */}
-            <div className='flex flex-col w-1/6 px-3 py-3 h-fit bg-white rounded-md'>
+            <div className='hidden lg:flex flex-col w-1/6 px-3 py-3 h-fit bg-white rounded-md'>
                 <h3 className='text-lg font-semibold border-b border-slate-300 pb-5'>
                     Filter by:
                 </h3>
@@ -102,11 +113,20 @@ const Shop = () => {
             </div>
             {/* products */}
             <div className='flex flex-col gap-5'>
+                <div className='flex lg:hidden items-center justify-center gap-10'>
+                    <button
+                        onClick={toggleModal}
+                        className='p-2 border rounded-md w-44 bg-white'
+                    >
+                        Filter
+                    </button>
+                    <SortFilter />
+                </div>
                 <div className='flex items-center justify-between'>
                     <span className='text-xl font-bold'>
                         {totalProducts} Products found
                     </span>
-                    <div className='lg:flex'>
+                    <div className='hidden lg:flex'>
                         <SortFilter />
                     </div>
                 </div>
@@ -115,18 +135,20 @@ const Shop = () => {
                         <ProductCard key={idx} product={product} type='Top' />
                     ))}
                 </div>
-                <div className='flex items-center justify-center mt-8 join'>
-                    {pageNumbers.map((idx, i) => (
-                        <button
-                            className='join-item btn bg-sky-100'
-                            key={idx}
-                            onClick={() => setPage(i + 1)}
-                        >
-                            {i + 1}
-                        </button>
-                    ))}
-                </div>
+
+                <Pagination
+                    totalPages={totalPages}
+                    onPageClick={handlePageClick}
+                    currentPage={page}
+                />
             </div>
+            {/* sm and md screen filter */}
+            <FilterModal
+                isOpen={isOpen}
+                toggleModal={toggleModal}
+                categories={categories}
+                brands={uniqueBrands}
+            />
         </div>
     )
 }

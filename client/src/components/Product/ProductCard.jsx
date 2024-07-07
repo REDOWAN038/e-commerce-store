@@ -18,8 +18,10 @@ import {
 import StarRating from "../StarRating"
 import { addToCart } from "../../features/cart/cartSlice"
 import { showToast } from "../../utils/toast"
+import { MdDelete, MdEdit } from "react-icons/md"
+import axios from "axios"
 
-const ProductCard = ({ product, type }) => {
+const ProductCard = ({ product, type, user = "" }) => {
     const dispatch = useDispatch()
     const [favourite, setFavourite] = useState()
 
@@ -44,6 +46,36 @@ const ProductCard = ({ product, type }) => {
         }
     }
 
+    const handleDeleteProduct = async (slug) => {
+        const isConfirmed = window.confirm(
+            "Are you sure you want to delete this product?"
+        )
+        if (isConfirmed) {
+            try {
+                const res = await axios.delete(
+                    `${
+                        import.meta.env.VITE_SERVER_URL
+                    }/api/v1/admin/product/${slug}`,
+                    { withCredentials: true }
+                )
+
+                if (res?.data?.success) {
+                    showToast(res?.data?.message, "success")
+                    window.location.reload()
+                }
+            } catch (error) {
+                if (
+                    error?.response?.status === 403 ||
+                    error?.response?.status === 404
+                ) {
+                    showToast(error?.response?.data?.message, "error")
+                } else {
+                    showToast("something went wrong", "error")
+                }
+            }
+        }
+    }
+
     useEffect(() => {
         if (isFavourite(product?._id)) {
             setFavourite(true)
@@ -53,6 +85,7 @@ const ProductCard = ({ product, type }) => {
         dispatch(setFavorites(getFavoritesFromLocalStorage()))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [favourite])
+
     return (
         <div className='card card-compact bg-base-100 w-80 h-80 lg:w-80 lg:h-96 shadow-xl'>
             <figure className='h-1/2'>
@@ -86,31 +119,48 @@ const ProductCard = ({ product, type }) => {
                             ${product.price}
                         </span>
                     </div>
-                    <div className='flex gap-3'>
-                        <div className='tooltip' data-tip='favourite'>
-                            {favourite ? (
-                                <FaHeart
-                                    className='cursor-pointer fill-pink-700 w-5 h-5'
-                                    onClick={handleAddToFavourites}
+                    {user === "Admin" ? (
+                        <div className='flex gap-3'>
+                            <div className='tooltip' data-tip='edit'>
+                                <Link
+                                    to={`/admin/update-product/${product.slug}`}
+                                >
+                                    <MdEdit className='cursor-pointer text-blue-600 w-5 h-5' />
+                                </Link>
+                            </div>
+                            <div className='tooltip' data-tip='delete'>
+                                <MdDelete
+                                    className='cursor-pointer text-red-600 w-5 h-5'
+                                    onClick={() =>
+                                        handleDeleteProduct(product.slug)
+                                    }
                                 />
-                            ) : (
-                                <FaRegHeart
+                            </div>
+                        </div>
+                    ) : (
+                        <div className='flex gap-3'>
+                            <div className='tooltip' data-tip='favourite'>
+                                {favourite ? (
+                                    <FaHeart
+                                        className='cursor-pointer fill-pink-700 w-5 h-5'
+                                        onClick={handleAddToFavourites}
+                                    />
+                                ) : (
+                                    <FaRegHeart
+                                        className='cursor-pointer w-5 h-5'
+                                        onClick={handleAddToFavourites}
+                                    />
+                                )}
+                            </div>
+                            <div className='tooltip' data-tip='add to cart'>
+                                <BsCart2
                                     className='cursor-pointer w-5 h-5'
-                                    onClick={handleAddToFavourites}
+                                    onClick={() => handleAddToCart(1)}
                                 />
-                            )}
+                            </div>
                         </div>
-                        <div className='tooltip' data-tip='add to cart'>
-                            <BsCart2
-                                className='cursor-pointer w-5 h-5'
-                                onClick={() => handleAddToCart(1)}
-                            />
-                        </div>
-                    </div>
+                    )}
                 </div>
-                {/* <div className='card-actions justify-end'>
-                    <button className='btn btn-primary'>Buy Now</button>
-                </div> */}
             </div>
         </div>
     )
