@@ -10,9 +10,11 @@ const authRoutes = require("../routes/authRoutes")
 const userRoutes = require("../routes/userRoutes")
 const categoryRoutes = require("../routes/categoryRoutes")
 const productRoutes = require("../routes/productRoutes")
+const orderRoutes = require("../routes/orderRoutes")
 const adminUserRoutes = require("../routes/adminUserRoutes")
 const adminCategoryRoutes = require("../routes/adminCategoryRoutes")
 const adminProductRoutes = require("../routes/adminProductRoutes")
+const adminOrderRoutes = require("../routes/adminOrderRoutes")
 
 
 // middlewares
@@ -33,9 +35,11 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/users", userRoutes)
 app.use("/api/v1/category", categoryRoutes)
 app.use("/api/v1/product", productRoutes)
+app.use("/api/v1/order", orderRoutes)
 app.use("/api/v1/admin/users", adminUserRoutes)
 app.use("/api/v1/admin/category", adminCategoryRoutes)
 app.use("/api/v1/admin/product", adminProductRoutes)
+app.use("/api/v1/admin/order", adminOrderRoutes)
 
 
 app.get("/test", (req, res) => {
