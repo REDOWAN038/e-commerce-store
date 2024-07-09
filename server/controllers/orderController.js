@@ -8,7 +8,7 @@ const { calculateOrderPrices } = require("../handler/calculateOrderPrice")
 
 // place order
 const handlePlaceOrder = asyncHandler(async (req, res, next) => {
-    const { orderItems, shippingAddress, paymentMethod } = req.body
+    const { orderItems, phone, shippingAddress, paymentMethod } = req.body
 
     if (orderItems && orderItems.length === 0) {
         next(createError(400, "No Order Items"))
@@ -35,13 +35,16 @@ const handlePlaceOrder = asyncHandler(async (req, res, next) => {
         };
     });
 
+
     const { itemsPrice, taxPrice, shippingPrice, totalPrice } =
         calculateOrderPrices(dbOrderItems);
+
 
     const order = new orderModel({
         orderItems: dbOrderItems,
         user: req.user._id,
         shippingAddress,
+        phone,
         paymentMethod,
         itemsPrice,
         taxPrice,

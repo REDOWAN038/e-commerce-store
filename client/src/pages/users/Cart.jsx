@@ -98,7 +98,7 @@ const Cart = () => {
                         </h2>
                     </div>
                 ))}
-                <Link to='/shipping'>
+                <Link to='/checkout'>
                     <button className='btn btn-primary w-full'>
                         Proceed to CheckOut
                     </button>

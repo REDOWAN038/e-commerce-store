@@ -1,21 +1,66 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
 import divisionDistrictData from "../../utils/divisionDistrictData"
 import CheckoutSummary from "../../components/CheckoutSummary"
+import { useDispatch, useSelector } from "react-redux"
+import { selectUser } from "../../features/auth/selector"
+import axios from "axios"
+import { selectCartItems } from "../../features/cart/selector"
+import { clearCartItems } from "../../features/cart/cartSlice"
+import { useNavigate } from "react-router-dom"
+import { showToast } from "../../utils/toast"
 
 const CheckOut = () => {
-    const { register, handleSubmit } = useForm()
+    const [phone, setPhone] = useState("")
+    const [paymentMethod, setPaymentMethod] = useState("")
+    const [selectedDistrict, setSelectedDistrict] = useState("")
+    const [address, setAddress] = useState("")
     const [selectedDivision, setSelectedDivision] = useState("")
     const [districts, setDistricts] = useState([])
+    const user = useSelector(selectUser)
+    const cartItems = useSelector(selectCartItems)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const handleDivisionChange = (event) => {
-        const selectedDivision = event.target.value
+    const handleDivisionChange = (e) => {
+        const selectedDivision = e.target.value
         setSelectedDivision(selectedDivision)
         setDistricts(divisionDistrictData[selectedDivision] || [])
     }
 
-    const onSubmit = async (data) => {
-        console.log("order ", data)
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/api/v1/order`,
+                {
+                    orderItems: cartItems,
+                    phone,
+                    shippingAddress: {
+                        address,
+                        division: selectedDivision,
+                        district: selectedDistrict,
+                        country: "Bangladesh",
+                    },
+                    paymentMethod,
+                },
+                { withCredentials: true }
+            )
+
+            if (res?.data?.success) {
+                dispatch(clearCartItems())
+                // showToast(res?.data?.message, "success")
+                navigate(`/payment/${res._id}`)
+            }
+        } catch (error) {
+            if (
+                error?.response?.status === 400 ||
+                error?.response?.status === 404
+            ) {
+                showToast(error?.response?.data?.message, "error")
+            } else {
+                showToast("something went wrong...", "error")
+            }
+        }
     }
 
     return (
@@ -26,10 +71,7 @@ const CheckOut = () => {
                     <h1 className='flex justify-center mt-5 text-3xl'>
                         Shipping Address
                     </h1>
-                    <form
-                        className='card-body'
-                        onSubmit={handleSubmit(onSubmit)}
-                    >
+                    <form className='card-body'>
                         {/* name */}
                         <div className='form-control'>
                             <label className='label'>
@@ -39,24 +81,23 @@ const CheckOut = () => {
                                 type='text'
                                 placeholder='name'
                                 className='input input-bordered'
-                                required
-                                {...register("name")}
+                                value={user?.name}
+                                disabled
                             />
                         </div>
-                        {/* mobile */}
+                        {/* phone */}
                         <div className='form-control'>
                             <label className='label'>
-                                <span className='label-text'>
-                                    Mobile Number
-                                </span>
+                                <span className='label-text'>Phone Number</span>
                             </label>
                             <input
                                 type='tel'
                                 pattern='01[0-9]{9}'
                                 placeholder='01XXXXXXXXX'
                                 className='input input-bordered'
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                                 required
-                                {...register("phone")}
                             />
                         </div>
                         {/* divisions */}
@@ -67,7 +108,6 @@ const CheckOut = () => {
                             <select
                                 className='select select-bordered w-full max-w-xs'
                                 required
-                                {...register("division")}
                                 value={selectedDivision}
                                 onChange={handleDivisionChange}
                             >
@@ -89,7 +129,10 @@ const CheckOut = () => {
                             <select
                                 className='select select-bordered w-full max-w-xs'
                                 required
-                                {...register("district")}
+                                value={selectedDistrict}
+                                onChange={(e) =>
+                                    setSelectedDistrict(e.target.value)
+                                }
                             >
                                 <option value=''>Select a district</option>
                                 {districts.map((district, idx) => (
@@ -108,13 +151,28 @@ const CheckOut = () => {
                                 placeholder='Address...'
                                 className='textarea textarea-bordered textarea-md w-full'
                                 required
-                                {...register("address")}
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
                             ></textarea>
                         </div>
-                        <div className='flex items-center justify-center mt-10'>
-                            <button className='btn btn-primary'>
-                                Place Order
-                            </button>
+                        {/* method */}
+                        <div>
+                            <label className='label'>
+                                <span className='label-text'>
+                                    Payment Method
+                                </span>
+                            </label>
+                            <input
+                                type='radio'
+                                className='form-radio cursor-pointer'
+                                name='paymentMethod'
+                                value='PayPal'
+                                onChange={(e) =>
+                                    setPaymentMethod(e.target.value)
+                                }
+                                required
+                            />
+                            <span className='ml-2'>PayPal</span>
                         </div>
                     </form>
                 </div>
@@ -122,6 +180,14 @@ const CheckOut = () => {
             {/* checkout summary */}
             <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-3/12 h-fit mx-auto px-10 py-5 mt-10'>
                 <CheckoutSummary />
+                <div className='flex'>
+                    <button
+                        className='btn btn-primary mt-5 w-full'
+                        onClick={(e) => handleSubmit(e)}
+                    >
+                        Place Order
+                    </button>
+                </div>
             </div>
         </div>
     )

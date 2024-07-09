@@ -26,6 +26,11 @@ const orderSchema = new mongoose.Schema({
         },
     ],
 
+    phone: {
+        type: String,
+        required: true
+    },
+
     shippingAddress: {
         address: { type: String, required: true },
         division: { type: String, required: true },

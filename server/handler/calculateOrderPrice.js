@@ -1,10 +1,10 @@
 const calculateOrderPrices = (orderItems) => {
     const itemsPrice = orderItems.reduce(
-        (acc, item) => acc + item.price * item.qty,
+        (acc, item) => acc + item.price * item.orderQuantity,
         0
     );
 
-    const shippingPrice = itemsPrice > 100 ? 0 : 10;
+    const shippingPrice = 10;
     const taxRate = 0.15;
     const taxPrice = (itemsPrice * taxRate).toFixed(2);
 

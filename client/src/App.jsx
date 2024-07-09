@@ -14,7 +14,7 @@ import Product from "./pages/users/Product"
 import Cart from "./pages/users/Cart"
 import Shop from "./pages/users/Shop"
 import CheckOut from "./pages/users/CheckOut"
-import ShippingAddress from "./pages/users/ShippingAddress"
+import Payment from "./pages/users/Payment"
 
 const App = () => {
     return (
@@ -49,14 +49,6 @@ const App = () => {
                     element={
                         <Layout>
                             <Shop />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path='/shipping'
-                    element={
-                        <Layout>
-                            <ShippingAddress />
                         </Layout>
                     }
                 />
@@ -96,6 +88,16 @@ const App = () => {
                         <ProtectedRoute accessBy='authorized'>
                             <Layout>
                                 <CheckOut />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/payment/:id'
+                    element={
+                        <ProtectedRoute accessBy='authorized'>
+                            <Layout>
+                                <Payment />
                             </Layout>
                         </ProtectedRoute>
                     }
