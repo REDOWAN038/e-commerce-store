@@ -8,6 +8,7 @@ import { selectCartItems } from "../../features/cart/selector"
 import { clearCartItems } from "../../features/cart/cartSlice"
 import { useNavigate } from "react-router-dom"
 import { showToast } from "../../utils/toast"
+import OrderDetails from "../../components/OrderDetails"
 
 const CheckOut = () => {
     const [phone, setPhone] = useState("")
@@ -49,7 +50,7 @@ const CheckOut = () => {
             if (res?.data?.success) {
                 dispatch(clearCartItems())
                 // showToast(res?.data?.message, "success")
-                navigate(`/payment/${res._id}`)
+                navigate(`/payment/${res?.data?.payload?.placedOrder?._id}`)
             }
         } catch (error) {
             if (
@@ -66,7 +67,7 @@ const CheckOut = () => {
     return (
         <div className='flex flex-col lg:flex-row'>
             {/* shipping address */}
-            <div className='flex flex-col bg-base-100 shadow-xl w-11/12 lg:w-8/12 mx-auto gap-6 px-10 py-5 mt-10'>
+            <div className='flex flex-col bg-base-100 shadow-xl w-11/12 lg:w-7/12 mx-auto gap-6 px-10 py-5 mt-10'>
                 <div className='w-full'>
                     <h1 className='flex justify-center mt-5 text-3xl'>
                         Shipping Address
@@ -178,7 +179,9 @@ const CheckOut = () => {
                 </div>
             </div>
             {/* checkout summary */}
-            <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-3/12 h-fit mx-auto px-10 py-5 mt-10'>
+            <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-4/12 h-fit mx-auto px-10 py-5 mt-10'>
+                <h1 className='card-title border-b-2 pb-4'>Order Summary</h1>
+                <OrderDetails />
                 <CheckoutSummary />
                 <div className='flex'>
                     <button

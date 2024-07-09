@@ -9,13 +9,12 @@ import { useNavigate } from "react-router-dom"
 import Person from "../../assets/person.jpg"
 import { selectFavourites } from "../../features/favourites/selector"
 import Favourites from "../Favourites"
-import { selectCartItems, selectItemsPrice } from "../../features/cart/selector"
+import { selectCartItems } from "../../features/cart/selector"
 
 const UserLoggedIn = () => {
     const dispatch = useDispatch()
     const favourites = useSelector(selectFavourites)
     const cartItems = useSelector(selectCartItems)
-    const itemsPrice = useSelector(selectItemsPrice)
     const navigate = useNavigate()
 
     const handleLogout = async () => {
@@ -52,7 +51,9 @@ const UserLoggedIn = () => {
                         <div className='indicator'>
                             {cartItems.length > 0 ? (
                                 <>
-                                    <BsCart2 className='h-5 w-5' />
+                                    <Link to='/cart'>
+                                        <BsCart2 className='h-5 w-5' />
+                                    </Link>
                                     <span className='badge badge-sm indicator-item'>
                                         {cartItems.length}
                                     </span>
@@ -70,26 +71,6 @@ const UserLoggedIn = () => {
                                     />
                                 </>
                             )}
-                        </div>
-                    </div>
-                    <div
-                        tabIndex={0}
-                        className='card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow'
-                    >
-                        <div className='card-body'>
-                            <span className='text-lg font-bold'>
-                                {cartItems.length} Items
-                            </span>
-                            <span className='text-info'>
-                                Subtotal: ${itemsPrice}
-                            </span>
-                            <div className='card-actions'>
-                                <Link to='/cart'>
-                                    <button className='btn btn-primary w-full'>
-                                        View Cart
-                                    </button>
-                                </Link>
-                            </div>
                         </div>
                     </div>
                 </div>

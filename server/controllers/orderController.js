@@ -11,7 +11,7 @@ const handlePlaceOrder = asyncHandler(async (req, res, next) => {
     const { orderItems, phone, shippingAddress, paymentMethod } = req.body
 
     if (orderItems && orderItems.length === 0) {
-        next(createError(400, "No Order Items"))
+        return next(createError(400, "No Order Items"))
     }
 
     const itemsFromDB = await productModel.find({
@@ -24,7 +24,7 @@ const handlePlaceOrder = asyncHandler(async (req, res, next) => {
         );
 
         if (!matchingItemFromDB) {
-            next(createError(404, `Product not found: ${itemFromClient.name}`))
+            return next(createError(404, `Product not found: ${itemFromClient.name}`))
         }
 
         return {
@@ -145,7 +145,7 @@ const handleGetSingleOrder = asyncHandler(async (req, res, next) => {
     const order = await orderModel.findById(id).populate("user")
 
     if (!order || order.length === 0) {
-        next(createError(404, "order not found"))
+        return next(createError(404, "order not found"))
     }
 
     return successResponse(res, {
@@ -163,7 +163,7 @@ const handleMarkOrderAsPaid = asyncHandler(async (req, res, next) => {
     const order = await orderModel.findById(id).populate("user")
 
     if (!order || order.length === 0) {
-        next(createError(404, "order not found"))
+        return next(createError(404, "order not found"))
     }
 
     order.isPaid = true;
@@ -192,11 +192,11 @@ const handleMarkOrderAsDelivered = asyncHandler(async (req, res, next) => {
     const order = await orderModel.findById(id).populate("user")
 
     if (!order || order.length === 0) {
-        next(createError(404, "order not found"))
+        return next(createError(404, "order not found"))
     }
 
     if (!order.isPaid) {
-        next(createError(406, "payment is not done yet"))
+        return next(createError(406, "payment is not done yet"))
     }
 
     order.isDelivered = true;

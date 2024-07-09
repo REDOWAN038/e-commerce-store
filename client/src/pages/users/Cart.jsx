@@ -106,6 +106,7 @@ const Cart = () => {
             </div>
             {/* checkout summary */}
             <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-3/12 h-fit mx-auto px-10 py-5 mt-10'>
+                <h1 className='card-title border-b-2 pb-4'>Checkout Summary</h1>
                 <CheckoutSummary />
             </div>
         </div>

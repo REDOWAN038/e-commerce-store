@@ -2,7 +2,7 @@ const express = require("express")
 const createError = require('http-errors')
 const morgan = require("morgan")
 const cookieParser = require("cookie-parser")
-const { errorResponse } = require("../handler/responseHandler")
+const { errorResponse, successResponse } = require("../handler/responseHandler")
 
 const app = express()
 
@@ -43,8 +43,12 @@ app.use("/api/v1/admin/product", adminProductRoutes)
 app.use("/api/v1/admin/order", adminOrderRoutes)
 
 app.get("/api/v1/config/paypal", (req, res) => {
-    res.status(200).json({
-        clientId: paypalClientId
+    return successResponse(res, {
+        statusCode: 200,
+        message: "paypal client id",
+        payload: {
+            paypalClientId
+        }
     })
 })
 
