@@ -7,6 +7,7 @@ const cloudName = process.env.CLOUDINARY_NAME
 const cloudApiKey = process.env.CLOUDINARY_API_KEY
 const cloudSecretKey = process.env.CLOUDINARY_SECRET_KEY
 const cloudFolder = process.env.CLOUDINARY_FOLDER
+const paypalClientId = process.env.PAYPAL_CLIENT_ID
 
 module.exports = {
     port,
@@ -15,5 +16,6 @@ module.exports = {
     cloudName,
     cloudApiKey,
     cloudSecretKey,
-    cloudFolder
+    cloudFolder,
+    paypalClientId
 }

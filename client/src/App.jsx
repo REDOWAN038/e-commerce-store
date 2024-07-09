@@ -14,6 +14,7 @@ import Product from "./pages/users/Product"
 import Cart from "./pages/users/Cart"
 import Shop from "./pages/users/Shop"
 import CheckOut from "./pages/users/CheckOut"
+import ShippingAddress from "./pages/users/ShippingAddress"
 
 const App = () => {
     return (
@@ -48,6 +49,14 @@ const App = () => {
                     element={
                         <Layout>
                             <Shop />
+                        </Layout>
+                    }
+                />
+                <Route
+                    path='/shipping'
+                    element={
+                        <Layout>
+                            <ShippingAddress />
                         </Layout>
                     }
                 />
