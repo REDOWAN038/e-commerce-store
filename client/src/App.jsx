@@ -13,6 +13,7 @@ import AllProducts from "./pages/admin/AllProducts"
 import Product from "./pages/users/Product"
 import Cart from "./pages/users/Cart"
 import Shop from "./pages/users/Shop"
+import CheckOut from "./pages/users/CheckOut"
 
 const App = () => {
     return (
@@ -76,6 +77,16 @@ const App = () => {
                         <ProtectedRoute accessBy='authorized'>
                             <Layout>
                                 <Profile />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/checkout'
+                    element={
+                        <ProtectedRoute accessBy='authorized'>
+                            <Layout>
+                                <CheckOut />
                             </Layout>
                         </ProtectedRoute>
                     }

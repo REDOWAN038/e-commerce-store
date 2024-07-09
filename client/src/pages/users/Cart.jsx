@@ -1,23 +1,15 @@
 import { FaRegTrashAlt } from "react-icons/fa"
 import { useDispatch, useSelector } from "react-redux"
-import {
-    selectCartItems,
-    selectItemsPrice,
-    selectShippingPrice,
-    selectTaxPrice,
-    selectTotalPrice,
-} from "../../features/cart/selector"
+import { selectCartItems, selectItemsPrice } from "../../features/cart/selector"
 import { Link } from "react-router-dom"
 import { addToCart, removeFromCart } from "../../features/cart/cartSlice"
 import { showToast } from "../../utils/toast"
+import CheckoutSummary from "../../components/CheckoutSummary"
 
 const Cart = () => {
     const dispatch = useDispatch()
     const cartItems = useSelector(selectCartItems)
     const itemsPrice = useSelector(selectItemsPrice)
-    const shippingPrice = useSelector(selectShippingPrice)
-    const taxPrice = useSelector(selectTaxPrice)
-    const totalPrice = useSelector(selectTotalPrice)
 
     const getTotal = (price, quantity) => {
         return price * quantity
@@ -106,7 +98,7 @@ const Cart = () => {
                         </h2>
                     </div>
                 ))}
-                <Link to='/shipping'>
+                <Link to='/checkout'>
                     <button className='btn btn-primary w-full'>
                         Proceed to CheckOut
                     </button>
@@ -114,23 +106,7 @@ const Cart = () => {
             </div>
             {/* checkout summary */}
             <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-3/12 h-fit mx-auto px-10 py-5 mt-10'>
-                <h1 className='card-title border-b-2 pb-4'>Checkout Summary</h1>
-                <div className='flex items-center justify-between'>
-                    <h2>Subotal</h2>
-                    <h2>${itemsPrice}</h2>
-                </div>
-                <div className='flex items-center justify-between'>
-                    <h2>Shipping</h2>
-                    <h2>${shippingPrice}</h2>
-                </div>
-                <div className='flex items-center justify-between'>
-                    <h2>Tax</h2>
-                    <h2>${taxPrice}</h2>
-                </div>
-                <div className='flex items-center justify-between'>
-                    <h2 className='card-title'>Total</h2>
-                    <h2 className='card-title'>${totalPrice}</h2>
-                </div>
+                <CheckoutSummary />
             </div>
         </div>
     )
