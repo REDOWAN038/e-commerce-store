@@ -161,35 +161,6 @@ const handleGetSingleOrder = asyncHandler(async (req, res, next) => {
     })
 })
 
-// mark order paid
-// const handleMarkOrderAsPaid = asyncHandler(async (req, res, next) => {
-//     const { id } = req.params
-//     const order = await orderModel.findById(id).populate("user")
-
-//     if (!order || order.length === 0) {
-//         return next(createError(404, "order not found"))
-//     }
-
-//     order.isPaid = true;
-//     order.paidAt = Date.now();
-//     order.paymentResult = {
-//         id: req.body.id,
-//         status: req.body.status,
-//         updateTime: req.body.updateTime,
-//         emailAddress: req.body.payer.emailAddress,
-//     };
-
-//     const updatedOrder = await order.save();
-
-//     return successResponse(res, {
-//         statusCode: 200,
-//         message: "order marked paid successfully",
-//         payload: {
-//             updatedOrder
-//         }
-//     })
-// })
-
 // order payment intent
 const handleOrderPaymentIntent = asyncHandler(async (req, res, next) => {
     const { id } = req.params
@@ -314,7 +285,7 @@ const handleMarkOrderAsDelivered = asyncHandler(async (req, res, next) => {
     }
 
     if (!order.isPaid) {
-        return next(createError(406, "payment is not done yet"))
+        return next(createError(406, "payment is pending"))
     }
 
     order.isDelivered = true;

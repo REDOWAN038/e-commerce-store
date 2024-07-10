@@ -74,7 +74,7 @@ const UserNotLoggedIn = () => {
                         >
                             <ul
                                 tabIndex={0}
-                                className='dropdown-content menu bg-base-100 z-[1] w-56 p-2 shadow overflow-y-auto'
+                                className='dropdown-content menu bg-base-100 rounded-box z-[1] w-56 p-2 shadow overflow-y-auto'
                             >
                                 {favourites.map((fav, idx) => (
                                     <li key={idx}>
