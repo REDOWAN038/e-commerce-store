@@ -1,14 +1,19 @@
 const createError = require("http-errors")
+const mongoose = require('mongoose');
+const Stripe = require("stripe")
 
 const productModel = require("../models/productModel")
 const orderModel = require("../models/orderModel")
 const asyncHandler = require("../handler/asyncHandler")
 const { successResponse } = require("../handler/responseHandler")
-const { calculateOrderPrices } = require("../handler/calculateOrderPrice")
+const { calculateOrderPrices } = require("../handler/calculateOrderPrice");
+const { stripeSecretKey } = require("../src/secret");
+
+const stripe = new Stripe(stripeSecretKey)
 
 // place order
 const handlePlaceOrder = asyncHandler(async (req, res, next) => {
-    const { orderItems, phone, shippingAddress, paymentMethod } = req.body
+    const { orderItems, phone, shippingAddress } = req.body
 
     if (orderItems && orderItems.length === 0) {
         return next(createError(400, "No Order Items"))
@@ -45,7 +50,6 @@ const handlePlaceOrder = asyncHandler(async (req, res, next) => {
         user: req.user._id,
         shippingAddress,
         phone,
-        paymentMethod,
         itemsPrice,
         taxPrice,
         shippingPrice,
@@ -158,32 +162,146 @@ const handleGetSingleOrder = asyncHandler(async (req, res, next) => {
 })
 
 // mark order paid
-const handleMarkOrderAsPaid = asyncHandler(async (req, res, next) => {
+// const handleMarkOrderAsPaid = asyncHandler(async (req, res, next) => {
+//     const { id } = req.params
+//     const order = await orderModel.findById(id).populate("user")
+
+//     if (!order || order.length === 0) {
+//         return next(createError(404, "order not found"))
+//     }
+
+//     order.isPaid = true;
+//     order.paidAt = Date.now();
+//     order.paymentResult = {
+//         id: req.body.id,
+//         status: req.body.status,
+//         updateTime: req.body.updateTime,
+//         emailAddress: req.body.payer.emailAddress,
+//     };
+
+//     const updatedOrder = await order.save();
+
+//     return successResponse(res, {
+//         statusCode: 200,
+//         message: "order marked paid successfully",
+//         payload: {
+//             updatedOrder
+//         }
+//     })
+// })
+
+// order payment intent
+const handleOrderPaymentIntent = asyncHandler(async (req, res, next) => {
     const { id } = req.params
-    const order = await orderModel.findById(id).populate("user")
+    const order = await orderModel.findById(id).populate("user");
 
     if (!order || order.length === 0) {
-        return next(createError(404, "order not found"))
+        return next(createError(404, "Order not found"));
     }
 
-    order.isPaid = true;
-    order.paidAt = Date.now();
-    order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        updateTime: req.body.updateTime,
-        emailAddress: req.body.payer.emailAddress,
-    };
+    if (order.user._id.toString() !== req.user._id) {
+        return next(createError(403, "Invalid User"));
+    }
 
-    const updatedOrder = await order.save();
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: order.totalPrice * 100,
+        currency: "usd",
+        metadata: {
+            orderId: id,
+            userId: req.user._id
+        },
+    });
+
+    if (!paymentIntent.client_secret) {
+        return next(new Error("error while creating payment intent..."))
+    }
+
+    const paymentIntentId = paymentIntent.id
+    const clientSecret = paymentIntent.client_secret.toString()
 
     return successResponse(res, {
         statusCode: 200,
-        message: "order marked paid successfully",
+        message: "payment intent",
         payload: {
-            updatedOrder
+            paymentIntentId,
+            clientSecret
         }
     })
+
+})
+
+// mark order paid
+const handleMarkOrderAsPaid = asyncHandler(async (req, res, next) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+        const { id } = req.params;
+        const { paymentIntentId } = req.body
+        const order = await orderModel.findById(id).populate("user").session(session);
+
+        if (!order || order.length === 0) {
+            await session.abortTransaction();
+            session.endSession();
+            return next(createError(404, "Order not found"));
+        }
+
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+        if (!paymentIntent) {
+            return next(createError(404, "payment intent not found"))
+        }
+
+        if (
+            paymentIntent.metadata.orderId !== id ||
+            paymentIntent.metadata.userId !== req.user._id
+        ) {
+            return next(createError(400, "payment intent mismatch"))
+        }
+
+        if (paymentIntent.status !== "succeeded") {
+            return next(createError(400, `payment intent not succeeded. Status: ${paymentIntent.status}`))
+        }
+
+        order.isPaid = true;
+        order.paidAt = Date.now();
+        order.paymentIntentId = paymentIntentId
+
+        for (const item of order.orderItems) {
+            const product = await productModel.findById(item.product).session(session);
+
+            if (product) {
+                product.quantity -= item.orderQuantity;
+                product.sold += item.orderQuantity;
+
+                // Ensure quantity and sold do not go negative
+                if (product.quantity < 0) {
+                    product.quantity = 0;
+                }
+                if (product.sold < 0) {
+                    product.sold = 0;
+                }
+
+                await product.save({ session });
+            }
+        }
+
+        const updatedOrder = await order.save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return successResponse(res, {
+            statusCode: 200,
+            message: "Order marked paid successfully",
+            payload: {
+                updatedOrder,
+            },
+        });
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        return next(error);
+    }
 })
 
 // mark order deliverd
@@ -222,5 +340,6 @@ module.exports = {
     handleGetTotalSalesByDates,
     handleGetSingleOrder,
     handleMarkOrderAsPaid,
-    handleMarkOrderAsDelivered
+    handleMarkOrderAsDelivered,
+    handleOrderPaymentIntent
 }

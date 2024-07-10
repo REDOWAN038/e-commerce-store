@@ -1,34 +1,20 @@
 import axios from "axios"
-import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js"
+import moment from "moment"
+import { Elements } from "@stripe/react-stripe-js"
 import { showToast } from "../../utils/toast"
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { selectUser } from "../../features/auth/selector"
+import { selectStripePromise, selectUser } from "../../features/auth/selector"
 import CheckoutSummary from "../../components/CheckoutSummary"
+import StripePayment from "../../components/StripePayment"
 
 const Payment = () => {
     const { id } = useParams()
     const user = useSelector(selectUser)
-    const [paypalClientId, setPaypalClientId] = useState("")
+    const stripePromise = useSelector(selectStripePromise)
     const [orderDetails, setOrderDetails] = useState()
-
-    const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
-
-    const handleGetPaypalClientId = async () => {
-        try {
-            const res = await axios.get(
-                `${import.meta.env.VITE_SERVER_URL}/api/v1/config/paypal`
-            )
-
-            if (res?.data?.success) {
-                setPaypalClientId(res?.data?.payload?.paypalClientId)
-            }
-        } catch (error) {
-            showToast("something went wrong", "error")
-            console.log(error)
-        }
-    }
+    const [paymentIntentData, setPaymentIntentData] = useState(null)
 
     const handleGetOrderDetails = async () => {
         try {
@@ -46,56 +32,49 @@ const Payment = () => {
         }
     }
 
-    function onApprove(data, actions) {
-        // return actions.order.capture().then(async function (details) {
-        //     try {
-        //         await payOrder({ orderId, details })
-        //         refetch()
-        //         toast.success("Order is paid")
-        //     } catch (error) {
-        //         toast.error(error?.data?.message || error.message)
-        //     }
-        // })
-    }
+    const getPaymentIntent = async () => {
+        try {
+            const res = await axios.get(
+                `${
+                    import.meta.env.VITE_SERVER_URL
+                }/api/v1/order/payment-intent/${id}`,
+                { withCredentials: true }
+            )
 
-    function createOrder(data, actions) {
-        // return actions.order
-        //     .create({
-        //         purchase_units: [{ amount: { value: order.totalPrice } }],
-        //     })
-        //     .then((orderID) => {
-        //         return orderID
-        //     })
-    }
-
-    function onError(err) {
-        // toast.error(err.message)
-    }
-
-    useEffect(() => {
-        const loadingPaPalScript = async () => {
-            paypalDispatch({
-                type: "resetOptions",
-                value: {
-                    "client-id": paypalClientId,
-                    currency: "USD",
-                },
-            })
-            paypalDispatch({ type: "setLoadingStatus", value: "pending" })
-        }
-
-        if (orderDetails && !orderDetails.isPaid) {
-            if (!window.paypal) {
-                loadingPaPalScript()
+            if (res?.data?.success) {
+                setPaymentIntentData(res?.data?.payload)
             }
+        } catch (error) {
+            showToast(error?.response?.data?.message, "error")
         }
-    }, [paypalClientId, orderDetails, paypalDispatch])
+    }
+
+    const handleDeliverProduct = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await axios.put(
+                `${
+                    import.meta.env.VITE_SERVER_URL
+                }/api/v1/admin/order/deliver/${id}`,
+                {},
+                { withCredentials: true }
+            )
+            if (res?.data?.success) {
+                showToast("Order is Delivered", "success")
+                window.location.reload()
+            }
+        } catch (error) {
+            showToast("something went wrong", "error")
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 await handleGetOrderDetails()
-                await handleGetPaypalClientId()
+                if (!user?.isAdmin) {
+                    await getPaymentIntent()
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -104,11 +83,26 @@ const Payment = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             await getPaymentIntent()
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+
+    //     if (orderDetails?.length > 0) {
+    //         fetchData()
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [orderDetails])
+
     return (
-        <div className='flex flex-col gap-4 mt-10 lg:flex-row'>
-            <div className='flex flex-col space-y-4 w-11/12 lg:w-7/12 mx-auto'>
+        <div className='flex flex-col justify-center gap-8 mt-10 lg:flex-row mx-auto'>
+            <div className='flex flex-col space-y-4 w-11/12 lg:w-5/12'>
                 {/* product details */}
-                <div className='flex flex-col bg-white shadow-sm w-full gap-6 px-10 py-5 h-fit'>
+                <div className='flex flex-col bg-white shadow-sm w-full gap-6 px-10 py-5 h-fit rounded-md border border-black'>
                     {orderDetails?.orderItems?.length === 0 ? (
                         <h2>Order is empty</h2>
                     ) : (
@@ -172,7 +166,8 @@ const Payment = () => {
                     )}
                 </div>
                 {/* shipping address */}
-                <div className='flex flex-col space-y-4 bg-white shadow-sm w-fit h-fit px-10 py-5'>
+                <div className='flex flex-col space-y-4 bg-white shadow-sm w-full h-fit px-10 py-5 rounded-md border border-black'>
+                    {/* <OrderDetails items={orderDetails?.orderItems} /> */}
                     <div className=''>
                         <h2 className='text-xl font-bold mb-2'>
                             Shipping Details
@@ -193,82 +188,81 @@ const Payment = () => {
                         </p>
 
                         <p className='mb-4 flex gap-3 items-center'>
+                            <strong className='text-pink-500'>Phone:</strong>{" "}
+                            {orderDetails?.phone}
+                        </p>
+
+                        <p className='mb-4 flex gap-3 items-center'>
                             <strong className='text-pink-500'>Address:</strong>{" "}
                             {orderDetails?.shippingAddress?.address},{" "}
                             {orderDetails?.shippingAddress?.district},{" "}
                             {orderDetails?.shippingAddress?.division},{" "}
                             {orderDetails?.shippingAddress?.country}
                         </p>
-
-                        <p className='mb-4 flex gap-3 items-center'>
-                            <strong className='text-pink-500'>Method:</strong>{" "}
-                            {orderDetails?.paymentMethod}
-                        </p>
-
-                        {orderDetails?.isPaid ? (
-                            <h1 className='text-white bg-black w-full border rounded-md text-center p-2'>
-                                Paid on {orderDetails?.paidAt}
-                            </h1>
-                        ) : (
-                            <h1 className='text-white bg-black w-full border rounded-md text-center p-2'>
-                                Not paid
-                            </h1>
-                        )}
                     </div>
+                </div>
+            </div>
 
-                    {/* {!order.isPaid && (
-                    <div>
-                        {loadingPay && <Loader />}{" "}
-                        {isPending ? (
-                            <Loader />
-                        ) : (
-                            <div>
-                                <div>
-                                    <PayPalButtons
-                                        createOrder={createOrder}
-                                        onApprove={onApprove}
-                                        onError={onError}
-                                    ></PayPalButtons>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )} */}
-
-                    {/* {loadingDeliver && <Loader />} */}
-                    {/* {userInfo &&
-                    userInfo.isAdmin &&
-                    order.isPaid &&
-                    !order.isDelivered && (
+            <div className='flex flex-col space-y-4 w-11/12 lg:w-4/12'>
+                <div className='flex flex-col space-y-4 bg-white shadow-sm w-full h-fit px-10 py-5 rounded-md border border-black'>
+                    <h1 className='card-title border-b-2 pb-4'>
+                        Checkout Summary
+                    </h1>
+                    <CheckoutSummary
+                        itemsPrice={orderDetails?.itemsPrice}
+                        taxPrice={orderDetails?.taxPrice}
+                        shippingPrice={orderDetails?.shippingPrice}
+                        totalPrice={orderDetails?.totalPrice}
+                    />
+                    {orderDetails?.isPaid ? (
+                        <h1 className='text-white bg-black w-full border rounded-md text-center p-2'>
+                            Paid on{" "}
+                            {moment(orderDetails?.paidAt).format(
+                                "Do MMMM YYYY"
+                            )}
+                        </h1>
+                    ) : (
+                        <h1 className='text-white bg-black w-full border rounded-md text-center p-2'>
+                            Not paid
+                        </h1>
+                    )}
+                    {user && !user?.isAdmin && !orderDetails?.isPaid && (
+                        <div>
+                            <Elements
+                                stripe={stripePromise}
+                                options={{
+                                    clientSecret:
+                                        paymentIntentData?.clientSecret,
+                                }}
+                            >
+                                <StripePayment
+                                    paymentIntentData={paymentIntentData}
+                                />
+                            </Elements>
+                        </div>
+                    )}
+                    {user &&
+                    user.isAdmin &&
+                    orderDetails?.isPaid &&
+                    !orderDetails?.isDelivered ? (
                         <div>
                             <button
                                 type='button'
-                                className='bg-pink-500 text-white w-full py-2'
-                                onClick={deliverHandler}
+                                className='text-white bg-black w-full border rounded-md text-center p-2 hover:bg-white hover:text-black hover:border-black transition ease-in-out delay-150'
+                                onClick={handleDeliverProduct}
                             >
                                 Mark As Delivered
                             </button>
                         </div>
-                    )} */}
+                    ) : (
+                        <h1 className='text-white bg-black w-full border rounded-md text-center p-2'>
+                            Deliver on{" "}
+                            {moment(orderDetails?.deliveredAt).format(
+                                "Do MMMM YYYY"
+                            )}
+                        </h1>
+                    )}
                 </div>
-            </div>
-            <div className='flex flex-col space-y-4 w-11/12 lg:w-4/12 mx-auto'>
-                <div className='flex flex-col space-y-4 bg-white shadow-sm w-full h-fit px-10 py-5'>
-                    <h1 className='card-title border-b-2 pb-4'>
-                        Checkout Summary
-                    </h1>
-                    <CheckoutSummary />
-                </div>
-
-                {!orderDetails?.isPaid && (
-                    <div>
-                        <PayPalButtons
-                            createOrder={createOrder}
-                            onApprove={onApprove}
-                            onError={onError}
-                        ></PayPalButtons>
-                    </div>
-                )}
             </div>
         </div>
     )

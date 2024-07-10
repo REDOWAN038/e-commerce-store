@@ -15,7 +15,6 @@ const adminUserRoutes = require("../routes/adminUserRoutes")
 const adminCategoryRoutes = require("../routes/adminCategoryRoutes")
 const adminProductRoutes = require("../routes/adminProductRoutes")
 const adminOrderRoutes = require("../routes/adminOrderRoutes")
-const { paypalClientId } = require("./secret")
 
 
 // middlewares
@@ -41,16 +40,6 @@ app.use("/api/v1/admin/users", adminUserRoutes)
 app.use("/api/v1/admin/category", adminCategoryRoutes)
 app.use("/api/v1/admin/product", adminProductRoutes)
 app.use("/api/v1/admin/order", adminOrderRoutes)
-
-app.get("/api/v1/config/paypal", (req, res) => {
-    return successResponse(res, {
-        statusCode: 200,
-        message: "paypal client id",
-        payload: {
-            paypalClientId
-        }
-    })
-})
 
 app.get("/test", (req, res) => {
     res.status(200).json({

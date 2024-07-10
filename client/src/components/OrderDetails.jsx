@@ -1,16 +1,11 @@
-import { useSelector } from "react-redux"
-import { selectCartItems } from "../features/cart/selector"
-
-const OrderDetails = () => {
-    const cartItems = useSelector(selectCartItems)
-
+const OrderDetails = ({ items }) => {
     const getTotal = (price, quantity) => {
         return price * quantity
     }
 
     return (
         <>
-            {cartItems?.map((item, idx) => (
+            {items?.map((item, idx) => (
                 <div key={idx} className='flex items-center justify-between'>
                     <div className='flex items-center gap-1 font-bold'>
                         <h1>{item.name}</h1>

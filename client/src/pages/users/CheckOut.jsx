@@ -4,7 +4,13 @@ import CheckoutSummary from "../../components/CheckoutSummary"
 import { useDispatch, useSelector } from "react-redux"
 import { selectUser } from "../../features/auth/selector"
 import axios from "axios"
-import { selectCartItems } from "../../features/cart/selector"
+import {
+    selectCartItems,
+    selectItemsPrice,
+    selectShippingPrice,
+    selectTaxPrice,
+    selectTotalPrice,
+} from "../../features/cart/selector"
 import { clearCartItems } from "../../features/cart/cartSlice"
 import { useNavigate } from "react-router-dom"
 import { showToast } from "../../utils/toast"
@@ -12,13 +18,16 @@ import OrderDetails from "../../components/OrderDetails"
 
 const CheckOut = () => {
     const [phone, setPhone] = useState("")
-    const [paymentMethod, setPaymentMethod] = useState("")
     const [selectedDistrict, setSelectedDistrict] = useState("")
     const [address, setAddress] = useState("")
     const [selectedDivision, setSelectedDivision] = useState("")
     const [districts, setDistricts] = useState([])
     const user = useSelector(selectUser)
     const cartItems = useSelector(selectCartItems)
+    const itemsPrice = useSelector(selectItemsPrice)
+    const taxPrice = useSelector(selectTaxPrice)
+    const shippingPrice = useSelector(selectShippingPrice)
+    const totalPrice = useSelector(selectTotalPrice)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -42,14 +51,12 @@ const CheckOut = () => {
                         district: selectedDistrict,
                         country: "Bangladesh",
                     },
-                    paymentMethod,
                 },
                 { withCredentials: true }
             )
 
             if (res?.data?.success) {
                 dispatch(clearCartItems())
-                // showToast(res?.data?.message, "success")
                 navigate(`/payment/${res?.data?.payload?.placedOrder?._id}`)
             }
         } catch (error) {
@@ -156,37 +163,23 @@ const CheckOut = () => {
                                 onChange={(e) => setAddress(e.target.value)}
                             ></textarea>
                         </div>
-                        {/* method */}
-                        <div>
-                            <label className='label'>
-                                <span className='label-text'>
-                                    Payment Method
-                                </span>
-                            </label>
-                            <input
-                                type='radio'
-                                className='form-radio cursor-pointer'
-                                name='paymentMethod'
-                                value='PayPal'
-                                onChange={(e) =>
-                                    setPaymentMethod(e.target.value)
-                                }
-                                required
-                            />
-                            <span className='ml-2'>PayPal</span>
-                        </div>
                     </form>
                 </div>
             </div>
             {/* checkout summary */}
             <div className='flex flex-col space-y-4 bg-white shadow-sm w-11/12 lg:w-4/12 h-fit mx-auto px-10 py-5 mt-10'>
                 <h1 className='card-title border-b-2 pb-4'>Order Summary</h1>
-                <OrderDetails />
-                <CheckoutSummary />
+                <OrderDetails items={cartItems} />
+                <CheckoutSummary
+                    itemsPrice={itemsPrice}
+                    taxPrice={taxPrice}
+                    shippingPrice={shippingPrice}
+                    totalPrice={totalPrice}
+                />
                 <div className='flex'>
                     <button
                         className='btn btn-primary mt-5 w-full'
-                        onClick={(e) => handleSubmit(e)}
+                        onClick={handleSubmit}
                     >
                         Place Order
                     </button>

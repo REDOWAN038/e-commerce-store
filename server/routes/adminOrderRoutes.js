@@ -7,6 +7,6 @@ const router = express.Router()
 router.get("/", isLoggedIn, isAdmin, handleGetAllOrders)
 
 // deliver order
-router.get("/deliver/:id", isLoggedIn, isAdmin, handleMarkOrderAsDelivered)
+router.put("/deliver/:id", isLoggedIn, isAdmin, handleMarkOrderAsDelivered)
 
 module.exports = router

@@ -1,17 +1,9 @@
-import { useSelector } from "react-redux"
-import {
-    selectItemsPrice,
-    selectShippingPrice,
-    selectTaxPrice,
-    selectTotalPrice,
-} from "../features/cart/selector"
-
-const CheckoutSummary = () => {
-    const itemsPrice = useSelector(selectItemsPrice)
-    const taxPrice = useSelector(selectTaxPrice)
-    const shippingPrice = useSelector(selectShippingPrice)
-    const totalPrice = useSelector(selectTotalPrice)
-
+const CheckoutSummary = ({
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+}) => {
     return (
         <>
             <div className='flex items-center justify-between'>

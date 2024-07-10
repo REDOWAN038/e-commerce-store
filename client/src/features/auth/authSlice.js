@@ -1,9 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { loadStripe } from "@stripe/stripe-js"
+
+const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || ""
 
 
 const initialState = {
     isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
     user: JSON.parse(localStorage.getItem('user')) || "",
+    stripePromise: loadStripe(STRIPE_PUB_KEY)
 };
 
 export const authSlice = createSlice({

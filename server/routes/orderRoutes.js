@@ -1,6 +1,6 @@
 const express = require("express")
 const { isLoggedIn } = require("../middlewares/auth")
-const { handlePlaceOrder, handleGetLoggedUserAllOrders, handleGetTotalOrders, handleGetTotalSales, handleGetTotalSalesByDates, handleGetSingleOrder, handleMarkOrderAsPaid } = require("../controllers/orderController")
+const { handlePlaceOrder, handleGetLoggedUserAllOrders, handleGetTotalOrders, handleGetTotalSales, handleGetTotalSalesByDates, handleGetSingleOrder, handleMarkOrderAsPaid, handleOrderPaymentIntent } = require("../controllers/orderController")
 const router = express.Router()
 
 // place order
@@ -20,6 +20,9 @@ router.get("/total-sales-by-dates", handleGetTotalSalesByDates)
 
 // get order by id
 router.get("/:id", isLoggedIn, handleGetSingleOrder)
+
+// payment intent
+router.get("/payment-intent/:id", isLoggedIn, handleOrderPaymentIntent)
 
 // pay order
 router.put("/payment/:id", isLoggedIn, handleMarkOrderAsPaid)

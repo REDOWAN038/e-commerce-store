@@ -38,16 +38,8 @@ const orderSchema = new mongoose.Schema({
         country: { type: String, required: true },
     },
 
-    paymentMethod: {
+    paymentIntentId: {
         type: String,
-        required: true,
-    },
-
-    paymentResult: {
-        id: { type: String },
-        status: { type: String },
-        updateTime: { type: String },
-        emailAddress: { type: String },
     },
 
     itemsPrice: {
