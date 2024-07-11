@@ -70,56 +70,76 @@ const UserLists = () => {
     }, [])
 
     return (
-        <div className='overflow-x-auto'>
-            <h1 className='flex items-center justify-center text-xl mb-10 mt-16'>
-                All Users
-            </h1>
-            <div className='flex items-center justify-center mx-auto'>
-                <table className='table w-3/4'>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Admin</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users?.map((user, idx) => (
-                            <tr
-                                key={idx}
-                                className=' cursor-pointer hover:bg-gray-300'
-                            >
-                                <th>{idx + 1}</th>
-                                <td>{user?.name}</td>
-                                <td>{user?.email}</td>
-                                <td>
-                                    {user?.isAdmin ? (
-                                        <GiCheckMark className='text-green-600 w-4 h-4' />
-                                    ) : (
-                                        <FaXmark className='text-red-600 w-5 h-5' />
-                                    )}
-                                </td>
-                                <td>
-                                    {user?.isAdmin ? null : (
-                                        <div
-                                            className='tooltip'
-                                            data-tip='delete'
-                                        >
-                                            <MdDelete
-                                                className='cursor-pointer text-red-600 w-5 h-5'
-                                                onClick={() =>
-                                                    handleDelete(user._id)
-                                                }
-                                            />
-                                        </div>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+        <div className='flex flex-col gap-8 mt-10 w-11/12 lg:w-9/12 h-[400px] mx-auto'>
+            <div className='w-full flex flex-col items-center'>
+                <h1 className='mt-10 mb-10 text-lg font-bold'>All Users</h1>
+                <div className='flex flex-col bg-white shadow-lg w-full gap-6 px-10 py-5 h-fit rounded-lg'>
+                    <div className='overflow-x-auto'>
+                        <table className='w-full'>
+                            <thead className='border-b-2'>
+                                <tr>
+                                    <th className='p-2 text-center whitespace-nowrap'></th>
+                                    <th className='p-2 text-center whitespace-nowrap'>
+                                        Name
+                                    </th>
+                                    <th className='p-2 text-center whitespace-nowrap'>
+                                        Email
+                                    </th>
+                                    <th className='p-2 text-center whitespace-nowrap'>
+                                        Admin
+                                    </th>
+                                    <th className='p-2 text-center whitespace-nowrap'>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users?.map((user, idx) => (
+                                    <tr
+                                        key={idx}
+                                        className=' cursor-pointer hover:bg-gray-300'
+                                    >
+                                        <th className='p-2 text-center whitespace-nowrap'>
+                                            {idx + 1}
+                                        </th>
+                                        <td className='p-2 text-center whitespace-nowrap'>
+                                            {user?.name}
+                                        </td>
+                                        <td className='p-2 text-center whitespace-nowrap'>
+                                            {user?.email}
+                                        </td>
+                                        <td className='p-2 text-center whitespace-nowrap'>
+                                            <div className='flex justify-center'>
+                                                {user?.isAdmin ? (
+                                                    <GiCheckMark className='text-green-600 w-4 h-4' />
+                                                ) : (
+                                                    <FaXmark className='text-red-600 w-5 h-5' />
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className='p-2 text-center whitespace-nowrap'>
+                                            {user?.isAdmin ? null : (
+                                                <div
+                                                    className='tooltip'
+                                                    data-tip='delete'
+                                                >
+                                                    <MdDelete
+                                                        className='cursor-pointer text-red-600 w-5 h-5'
+                                                        onClick={() =>
+                                                            handleDelete(
+                                                                user._id
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     )

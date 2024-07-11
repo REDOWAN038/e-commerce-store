@@ -98,7 +98,7 @@ const ProductForm = ({
     }, [])
 
     return (
-        <div className='flex items-center justify-center mt-16'>
+        <div className='flex items-center justify-center mt-16 w-fit px-10 py-5 mx-auto bg-white rounded-md shadow-lg'>
             <form
                 className='flex flex-col gap-10 mx-2'
                 onSubmit={handleSubmit(onSubmit)}
@@ -203,7 +203,7 @@ const ProductForm = ({
                     </label>
                     <div className='border rounded p-4 flex flex-col gap-4'>
                         {existingImageUrls && (
-                            <div className='grid grid-cols-6 gap-4'>
+                            <div className='grid grid-cols-4 gap-4'>
                                 {existingImageUrls.map((url, idx) => (
                                     <div key={idx} className='relative group'>
                                         <img
@@ -237,7 +237,7 @@ const ProductForm = ({
                                         return "At least one image should be added"
                                     }
 
-                                    if (totalLength > 6) {
+                                    if (totalLength > 4) {
                                         return "Total number of images cannot be more than 6"
                                     }
 

@@ -7,10 +7,10 @@ const { handleCreateProduct, handleUpdateProduct, handleDeleteProduct } = requir
 const router = express.Router()
 
 // create product
-router.post("/", upload.array("imageFiles", 6), validateProduct, runValidation, isLoggedIn, isAdmin, handleCreateProduct)
+router.post("/", upload.array("imageFiles", 4), validateProduct, runValidation, isLoggedIn, isAdmin, handleCreateProduct)
 
 // update product
-router.put("/:slug", upload.array("imageFiles", 6), isLoggedIn, isAdmin, handleUpdateProduct)
+router.put("/:slug", upload.array("imageFiles", 4), isLoggedIn, isAdmin, handleUpdateProduct)
 
 // delete product
 router.delete("/:slug", isLoggedIn, isAdmin, handleDeleteProduct)
