@@ -15,6 +15,8 @@ import Cart from "./pages/users/Cart"
 import Shop from "./pages/users/Shop"
 import CheckOut from "./pages/users/CheckOut"
 import Payment from "./pages/users/Payment"
+import MyOrders from "./pages/users/MyOrders"
+import AllOrders from "./pages/admin/AllOrders"
 
 const App = () => {
     return (
@@ -103,11 +105,31 @@ const App = () => {
                     }
                 />
                 <Route
+                    path='/my-orders'
+                    element={
+                        <ProtectedRoute accessBy='authorized'>
+                            <Layout>
+                                <MyOrders />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
                     path='/admin/users'
                     element={
                         <ProtectedRoute accessBy='admin'>
                             <Layout>
                                 <UserLists />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/admin/orders'
+                    element={
+                        <ProtectedRoute accessBy='admin'>
+                            <Layout>
+                                <AllOrders />
                             </Layout>
                         </ProtectedRoute>
                     }

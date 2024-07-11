@@ -93,14 +93,16 @@ const Payment = () => {
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>
-            <div className='flex mx-auto'>
-                <Timeline
-                    class1='bg-primary'
-                    fill1='currentColor'
-                    class2='bg-primary'
-                    fill2='currentColor'
-                />
-            </div>
+            {!user.isAdmin && (
+                <div className='flex mx-auto'>
+                    <Timeline
+                        class1='bg-primary'
+                        fill1='currentColor'
+                        class2='bg-primary'
+                        fill2='currentColor'
+                    />
+                </div>
+            )}
             <div className='flex flex-col justify-center gap-8 mt-10 w-11/12 md:w-9/12 lg:w-7/12 mx-auto'>
                 <div className='w-full'>
                     {/* product details */}

@@ -74,9 +74,11 @@ const CheckOut = () => {
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>
-            <div className='flex mx-auto'>
-                <Timeline class1='bg-primary' fill1='currentColor' />
-            </div>
+            {!user.isAdmin && (
+                <div className='flex mx-auto'>
+                    <Timeline class1='bg-primary' fill1='currentColor' />
+                </div>
+            )}
             <div className='flex flex-col space-y-10 lg:space-y-0 justify-center lg:space-x-10 lg:flex-row w-full lg:w-[1000px] lg:mx-auto'>
                 {/* shipping address */}
                 <div className='flex flex-col bg-base-100 shadow-lg w-11/12 lg:w-6/12 gap-6 px-10 py-5 mx-auto rounded-lg'>

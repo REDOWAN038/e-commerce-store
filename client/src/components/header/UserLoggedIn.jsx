@@ -128,6 +128,9 @@ const UserLoggedIn = () => {
                             <Link to='/profile'>Profile</Link>
                         </li>
                         <li>
+                            <Link to='/my-orders'>My Orders</Link>
+                        </li>
+                        <li>
                             <a onClick={() => handleLogout()}>Logout</a>
                         </li>
                     </ul>

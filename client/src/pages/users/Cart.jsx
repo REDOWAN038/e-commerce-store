@@ -7,6 +7,7 @@ import {
     selectTaxPrice,
     selectTotalPrice,
 } from "../../features/cart/selector"
+import { selectUser } from "../../features/auth/selector"
 import { Link } from "react-router-dom"
 import { addToCart, removeFromCart } from "../../features/cart/cartSlice"
 import { showToast } from "../../utils/toast"
@@ -20,6 +21,7 @@ const Cart = () => {
     const taxPrice = useSelector(selectTaxPrice)
     const shippingPrice = useSelector(selectShippingPrice)
     const totalPrice = useSelector(selectTotalPrice)
+    const user = useSelector(selectUser)
 
     const getTotal = (price, quantity) => {
         return price * quantity
@@ -32,9 +34,11 @@ const Cart = () => {
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>
-            <div className='flex mx-auto'>
-                <Timeline />
-            </div>
+            {!user.isAdmin && (
+                <div className='flex mx-auto'>
+                    <Timeline />
+                </div>
+            )}
             <div className='flex flex-col space-y-10 lg:space-y-0 lg:flex-row w-full lg:w-11/12 lg:mx-auto'>
                 {/* about product */}
                 <div className='flex flex-col bg-white shadow-lg w-11/12 lg:w-7/12 mx-auto gap-6 px-10 py-5 rounded-lg'>
