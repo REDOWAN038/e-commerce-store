@@ -106,7 +106,9 @@ const handleGetTotalOrders = asyncHandler(async (req, res, next) => {
 // get total sales
 const handleGetTotalSales = asyncHandler(async (req, res, next) => {
     const orders = await orderModel.find();
-    const totalSales = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+    const totalSales = orders.reduce((sum, order) => {
+        return order.isPaid ? sum + order.totalPrice : sum;
+    }, 0);
     return successResponse(res, {
         statusCode: 200,
         message: "total sales returned successfully",

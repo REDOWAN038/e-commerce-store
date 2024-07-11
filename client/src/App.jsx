@@ -17,6 +17,7 @@ import CheckOut from "./pages/users/CheckOut"
 import Payment from "./pages/users/Payment"
 import MyOrders from "./pages/users/MyOrders"
 import AllOrders from "./pages/admin/AllOrders"
+import DashBoard from "./pages/admin/DashBoard"
 
 const App = () => {
     return (
@@ -120,6 +121,16 @@ const App = () => {
                         <ProtectedRoute accessBy='admin'>
                             <Layout>
                                 <UserLists />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/admin/dashboard'
+                    element={
+                        <ProtectedRoute accessBy='admin'>
+                            <Layout>
+                                <DashBoard />
                             </Layout>
                         </ProtectedRoute>
                     }
