@@ -151,7 +151,7 @@ const Categories = () => {
                 </button>
             </div>
             <div className='flex flex-col gap-8 mt-10 w-11/12 lg:w-8/12 h-[400px] mx-auto'>
-                <div className='w-full flex flex-col items-center'>
+                <div className='w-full flex flex-col items-center overflow-y-auto'>
                     <h1 className='mb-10 text-lg font-bold'>All Categories</h1>
                     <div className='flex flex-col bg-white shadow-lg w-full gap-6 px-10 py-5 h-fit rounded-lg'>
                         <div className='overflow-x-auto'>

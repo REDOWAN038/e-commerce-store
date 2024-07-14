@@ -47,7 +47,7 @@ const handleCreateProduct = asyncHandler(async (req, res, next) => {
 // get all products
 const handleGetAllProducts = asyncHandler(async (req, res, next) => {
     const page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 15
+    const limit = Number(req.query.limit) || 12
     const query = constructQuery(req.query)
 
     let sortOptions = {};
@@ -97,7 +97,7 @@ const handleGetAllProducts = asyncHandler(async (req, res, next) => {
 
 // get top products
 const handleGetTopProducts = asyncHandler(async (req, res, next) => {
-    const products = await productModel.find({}).sort({ rating: -1 }).limit(4)
+    const products = await productModel.find({ rating: { $gt: 0 } }).sort({ rating: -1 }).limit(6)
     return successResponse(res, {
         statusCode: 200,
         message: "fetched top products",
@@ -109,7 +109,7 @@ const handleGetTopProducts = asyncHandler(async (req, res, next) => {
 
 // get new products
 const handleGetNewProducts = asyncHandler(async (req, res, next) => {
-    const products = await productModel.find({}).sort({ createdAt: -1 }).limit(5)
+    const products = await productModel.find({}).sort({ createdAt: -1 }).limit(6)
     return successResponse(res, {
         statusCode: 200,
         message: "fetched new products",

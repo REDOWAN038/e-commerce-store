@@ -36,7 +36,7 @@ const NewProducts = () => {
         <div className='flex flex-col'>
             <h1 className='flex items-center justify-center text-xl font-bold mb-10'>
                 <span className='border-b-4 border-emerald-500 animate-pulse'>
-                    New Products
+                    New Arrivals
                 </span>
             </h1>
 

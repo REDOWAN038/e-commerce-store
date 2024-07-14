@@ -74,7 +74,7 @@ const CheckOut = () => {
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>
-            {!user.isAdmin && (
+            {!user?.isAdmin && (
                 <div className='flex mx-auto'>
                     <Timeline class1='bg-primary' fill1='currentColor' />
                 </div>

@@ -98,7 +98,9 @@ const ProductCard = ({ product, type, user = "" }) => {
                             <h2 className='card-title'>{product?.name}</h2>
                         </Link>
                         {type === "New" ? (
-                            <span>{moment(product?.createdAt).fromNow()}</span>
+                            <span className='text-green-700'>
+                                {moment(product?.createdAt).fromNow()}
+                            </span>
                         ) : product?.quantity > 0 ? (
                             <span className='text-green-700 animate-pulse'>
                                 {`${product?.quantity} items left`}

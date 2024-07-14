@@ -19,172 +19,51 @@ import MyOrders from "./pages/users/MyOrders"
 import AllOrders from "./pages/admin/AllOrders"
 import DashBoard from "./pages/admin/DashBoard"
 
+const LayoutWrapper = ({ children }) => <Layout>{children}</Layout>
+
+const routes = [
+    { path: "/", element: <Home /> },
+    { path: "/product/details/:slug", element: <Product /> },
+    { path: "/cart", element: <Cart /> },
+    { path: "/shop", element: <Shop /> },
+    { path: "/signin", element: <SignIn />, access: "unauthorized" },
+    { path: "/signup", element: <SignUp />, access: "unauthorized" },
+    { path: "/profile", element: <Profile />, access: "authorized" },
+    { path: "/checkout", element: <CheckOut />, access: "authorized" },
+    { path: "/payment/:id", element: <Payment />, access: "authorized" },
+    { path: "/my-orders", element: <MyOrders />, access: "authorized" },
+    { path: "/admin/users", element: <UserLists />, access: "admin" },
+    { path: "/admin/dashboard", element: <DashBoard />, access: "admin" },
+    { path: "/admin/orders", element: <AllOrders />, access: "admin" },
+    { path: "/admin/category", element: <Categories />, access: "admin" },
+    { path: "/admin/products", element: <AllProducts />, access: "admin" },
+    { path: "/admin/add-product", element: <AddProduct />, access: "admin" },
+    {
+        path: "/admin/update-product/:slug",
+        element: <UpdateProduct />,
+        access: "admin",
+    },
+]
+
 const App = () => {
     return (
         <Router>
             <Routes>
-                <Route
-                    path='/'
-                    element={
-                        <Layout>
-                            <Home />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path='/product/details/:slug'
-                    element={
-                        <Layout>
-                            <Product />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path='/cart'
-                    element={
-                        <Layout>
-                            <Cart />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path='/shop'
-                    element={
-                        <Layout>
-                            <Shop />
-                        </Layout>
-                    }
-                />
-                <Route
-                    path='/signin'
-                    element={
-                        <ProtectedRoute accessBy='unauthorized'>
-                            <Layout>
-                                <SignIn />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/signup'
-                    element={
-                        <ProtectedRoute accessBy='unauthorized'>
-                            <Layout>
-                                <SignUp />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/profile'
-                    element={
-                        <ProtectedRoute accessBy='authorized'>
-                            <Layout>
-                                <Profile />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/checkout'
-                    element={
-                        <ProtectedRoute accessBy='authorized'>
-                            <Layout>
-                                <CheckOut />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/payment/:id'
-                    element={
-                        <ProtectedRoute accessBy='authorized'>
-                            <Layout>
-                                <Payment />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/my-orders'
-                    element={
-                        <ProtectedRoute accessBy='authorized'>
-                            <Layout>
-                                <MyOrders />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/users'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <UserLists />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/dashboard'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <DashBoard />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/orders'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <AllOrders />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/category'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <Categories />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/products'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <AllProducts />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/add-product'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <AddProduct />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path='/admin/update-product/:slug'
-                    element={
-                        <ProtectedRoute accessBy='admin'>
-                            <Layout>
-                                <UpdateProduct />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
+                {routes.map(({ path, element, access }) => (
+                    <Route
+                        key={path}
+                        path={path}
+                        element={
+                            access ? (
+                                <ProtectedRoute accessBy={access}>
+                                    <LayoutWrapper>{element}</LayoutWrapper>
+                                </ProtectedRoute>
+                            ) : (
+                                <LayoutWrapper>{element}</LayoutWrapper>
+                            )
+                        }
+                    />
+                ))}
             </Routes>
         </Router>
     )

@@ -1,22 +1,62 @@
 const Pagination = ({ totalPages, onPageClick, currentPage }) => {
-    const pageNumbers = []
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i)
+    const handleFirstPage = () => {
+        onPageClick(1)
     }
+    const handleLastPage = () => {
+        onPageClick(totalPages)
+    }
+
+    const getVisiblePageNumbers = () => {
+        const visiblePages = 5
+        const pages = []
+
+        let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2))
+        let endPage = Math.min(totalPages, startPage + visiblePages - 1)
+
+        if (endPage - startPage < visiblePages - 1) {
+            startPage = Math.max(1, endPage - visiblePages + 1)
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i)
+        }
+
+        return pages
+    }
+
+    const visiblePageNumbers = getVisiblePageNumbers()
 
     return (
         <div className='flex items-center justify-center mt-8 join'>
-            {pageNumbers.map((idx, i) => (
+            {currentPage !== 1 && (
+                <button
+                    className='join-item btn border border-black bg-sky-100 '
+                    onClick={handleFirstPage}
+                >
+                    First
+                </button>
+            )}
+            {visiblePageNumbers.map((pageNumber) => (
                 <button
                     className={`join-item btn border border-black ${
-                        currentPage === i + 1 ? "bg-sky-500" : "bg-sky-100 "
+                        currentPage === pageNumber
+                            ? "bg-sky-500"
+                            : "bg-sky-100 "
                     }`}
-                    key={idx}
-                    onClick={() => onPageClick(i + 1)}
+                    key={pageNumber}
+                    onClick={() => onPageClick(pageNumber)}
                 >
-                    {i + 1}
+                    {pageNumber}
                 </button>
             ))}
+            {currentPage !== totalPages && (
+                <button
+                    className='join-item btn border border-black bg-sky-100 '
+                    onClick={handleLastPage}
+                >
+                    Last
+                </button>
+            )}
         </div>
     )
 }

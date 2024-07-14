@@ -34,7 +34,7 @@ const Cart = () => {
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>
-            {!user.isAdmin && (
+            {!user?.isAdmin && (
                 <div className='flex mx-auto'>
                     <Timeline />
                 </div>

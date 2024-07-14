@@ -6,14 +6,20 @@ const constructQuery = (queryParams) => {
         constructedQuery.name = { $regex: searchRegExp }
     }
 
-    if (queryParams.brand) {
-        constructedQuery.brand = queryParams.brand;
-    }
+    // if (queryParams.brand) {
+    //     constructedQuery.brand = queryParams.brand;
+    // }
 
 
     if (queryParams.categories) {
         constructedQuery.category = {
             $in: queryParams.categories
+        };
+    }
+
+    if (queryParams.brands) {
+        constructedQuery.brand = {
+            $in: queryParams.brands
         };
     }
 

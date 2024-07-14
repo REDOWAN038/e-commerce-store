@@ -56,12 +56,12 @@ const Shop = () => {
                 queryParams.append("sortOption", filter.sortOption || "")
             }
 
-            if (filter.brands) {
-                queryParams.append("brand", filter.brands)
-            }
-
             filter.categories?.forEach((category) =>
                 queryParams.append("categories", category)
+            )
+
+            filter.brands?.forEach((brand) =>
+                queryParams.append("brands", brand)
             )
 
             const res = await axios.get(
@@ -103,7 +103,7 @@ const Shop = () => {
     return (
         <div className='flex justify-center mt-5 px-10 py-10 gap-10'>
             {/* filter */}
-            <div className='hidden lg:flex flex-col w-1/6 px-3 py-3 h-fit bg-white rounded-md'>
+            <div className='hidden lg:flex flex-col w-1/6 px-5 py-5 h-fit bg-white rounded-md shadow-lg'>
                 <h3 className='text-lg font-semibold border-b border-slate-300 pb-5'>
                     Filter by:
                 </h3>
