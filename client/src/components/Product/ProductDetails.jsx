@@ -5,6 +5,7 @@ import { addToCart } from "../../features/cart/cartSlice"
 import { showToast } from "../../utils/toast"
 
 const ProductDetails = ({ product }) => {
+    const [imageIdx, setImageIdx] = useState(0)
     const dispatch = useDispatch()
     const [orderQuantity, setOrderQuantity] = useState(1)
 
@@ -18,21 +19,29 @@ const ProductDetails = ({ product }) => {
     }
 
     return (
-        <div className='flex flex-col items-center justify-center lg:flex-row rounded-none lg:px-20 py-5 w-full gap-4 border-b-2'>
-            <div className='flex items-center justify-center w-[400px] md:w-[500px] h-[500px]'>
-                <div className='carousel w-full h-full flex items-center'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-0 rounded-none px-10 lg:px-20 w-full md:w-11/12 mx-auto border-b-2 py-20'>
+            <div className='grid grid-cols-1 gap-4 w-[400px] md:w-[500px]'>
+                {/* <div className='w-50 h-50'> */}
+                <img
+                    src={product?.images?.[imageIdx]}
+                    className='w-[400px] h-[400px] md:w-[500px] md:h-[500px] object-cover border border-black'
+                    alt={product?.name}
+                />
+                {/* </div> */}
+                <div className='grid grid-cols-4 gap-3'>
                     {product?.images?.map((image, idx) => (
-                        <div key={idx} className='carousel-item w-full'>
+                        <div key={idx} className='w-50 h-50'>
                             <img
                                 src={image}
-                                className='w-full'
+                                className='w-full h-full object-cover border border-black cursor-pointer'
                                 alt={product?.name}
+                                onClick={() => setImageIdx(idx)}
                             />
                         </div>
                     ))}
                 </div>
             </div>
-            <div className='flex flex-col justify-between px-2 py-4 space-y-10 flex-1'>
+            <div className='flex flex-col space-y-20 flex-1'>
                 <div className='flex flex-col space-y-1'>
                     <div className='flex items-center gap-60 md:gap-80 lg:gap-96'>
                         <h2 className='card-title'>{product?.name}</h2>

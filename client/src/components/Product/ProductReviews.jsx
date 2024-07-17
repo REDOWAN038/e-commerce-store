@@ -5,7 +5,7 @@ import Person from "../../assets/person.jpg"
 const ProductReviews = ({ reviews }) => {
     return (
         <div className='border-b-2'>
-            <div className='flex flex-col gap-16 px-5 py-5 lg:px-10 lg:py-10 lg:mx-14'>
+            <div className='flex flex-col gap-16 px-10 py-5 lg:px-10 lg:py-10 w-full md:w-11/12 mx-auto'>
                 {reviews?.map((review, idx) => (
                     <div key={idx} className='flex flex-col gap-3'>
                         <div className='flex gap-4'>

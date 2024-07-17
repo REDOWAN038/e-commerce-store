@@ -62,7 +62,7 @@ const handleGetAllProducts = asyncHandler(async (req, res, next) => {
             sortOptions = { price: -1 };
             break;
         default:
-            sortOptions = { rating: -1 };
+            sortOptions = { createdAt: -1 };
             break;
     }
 

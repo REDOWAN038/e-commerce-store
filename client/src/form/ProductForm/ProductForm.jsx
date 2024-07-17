@@ -238,7 +238,7 @@ const ProductForm = ({
                                     }
 
                                     if (totalLength > 4) {
-                                        return "Total number of images cannot be more than 6"
+                                        return "Total number of images cannot be more than 4"
                                     }
 
                                     return true
