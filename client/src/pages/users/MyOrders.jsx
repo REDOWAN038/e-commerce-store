@@ -39,7 +39,7 @@ const MyOrders = () => {
 
     return (
         <div className='flex flex-col  gap-8 mt-10  w-11/12 lg:w-10/12 h-[400px] mx-auto'>
-            <div className='w-full flex flex-col items-center'>
+            <div className='w-full flex flex-col items-center overflow-y-auto'>
                 <h1 className='mt-10 mb-10 text-lg font-bold'>My Orders</h1>
                 <div className='flex flex-col bg-white shadow-lg w-full gap-6 px-10 py-5 h-fit rounded-lg'>
                     <div className='overflow-x-auto'>

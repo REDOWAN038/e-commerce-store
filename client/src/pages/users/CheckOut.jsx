@@ -21,6 +21,7 @@ const CheckOut = () => {
     const [phone, setPhone] = useState("")
     const [selectedDistrict, setSelectedDistrict] = useState("")
     const [address, setAddress] = useState("")
+    const [orderId, setOrderId] = useState(null)
     const [selectedDivision, setSelectedDivision] = useState("")
     const [districts, setDistricts] = useState([])
     const user = useSelector(selectUser)
@@ -57,8 +58,7 @@ const CheckOut = () => {
             )
 
             if (res?.data?.success) {
-                dispatch(clearCartItems())
-                navigate(`/payment/${res?.data?.payload?.placedOrder?._id}`)
+                setOrderId(res?.data?.payload?.placedOrder?._id)
             }
         } catch (error) {
             if (
@@ -73,11 +73,20 @@ const CheckOut = () => {
     }
 
     useEffect(() => {
-        if (cartItems.length === 0) {
+        if (orderId !== null) {
+            navigate(`/payment/${orderId}`)
+        } else if (cartItems.length === 0) {
             navigate("/shop")
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cartItems.length])
+
+    useEffect(() => {
+        if (orderId) {
+            dispatch(clearCartItems())
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [orderId])
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>
