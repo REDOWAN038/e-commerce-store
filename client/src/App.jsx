@@ -1,23 +1,27 @@
+import { Suspense, lazy } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Layout from "./layout/Layout"
-import { Home } from "./pages/users/Home"
-import SignIn from "./pages/auth/SignIn"
 import ProtectedRoute from "./protection/ProtectedRoutes"
-import SignUp from "./pages/auth/SignUp"
-import Profile from "./pages/users/Profile"
-import UserLists from "./pages/admin/UserLists"
-import Categories from "./pages/admin/Categories"
-import AddProduct from "./pages/admin/AddProduct"
-import UpdateProduct from "./pages/admin/UpdateProduct"
-import AllProducts from "./pages/admin/AllProducts"
-import Product from "./pages/users/Product"
-import Cart from "./pages/users/Cart"
-import Shop from "./pages/users/Shop"
-import CheckOut from "./pages/users/CheckOut"
-import Payment from "./pages/users/Payment"
-import MyOrders from "./pages/users/MyOrders"
-import AllOrders from "./pages/admin/AllOrders"
-import DashBoard from "./pages/admin/DashBoard"
+import ErrorBoundary from "./components/ErrorBoundary"
+import Loading from "./components/Loading"
+
+const Home = lazy(() => import("./pages/users/Home"))
+const SignIn = lazy(() => import("./pages/auth/SignIn"))
+const SignUp = lazy(() => import("./pages/auth/SignUp"))
+const Profile = lazy(() => import("./pages/users/Profile"))
+const UserLists = lazy(() => import("./pages/admin/UserLists"))
+const Categories = lazy(() => import("./pages/admin/Categories"))
+const AddProduct = lazy(() => import("./pages/admin/AddProduct"))
+const UpdateProduct = lazy(() => import("./pages/admin/UpdateProduct"))
+const AllProducts = lazy(() => import("./pages/admin/AllProducts"))
+const Product = lazy(() => import("./pages/users/Product"))
+const Cart = lazy(() => import("./pages/users/Cart"))
+const Shop = lazy(() => import("./pages/users/Shop"))
+const CheckOut = lazy(() => import("./pages/users/CheckOut"))
+const Payment = lazy(() => import("./pages/users/Payment"))
+const MyOrders = lazy(() => import("./pages/users/MyOrders"))
+const AllOrders = lazy(() => import("./pages/admin/AllOrders"))
+const DashBoard = lazy(() => import("./pages/admin/DashBoard"))
 
 const LayoutWrapper = ({ children }) => <Layout>{children}</Layout>
 
@@ -48,23 +52,29 @@ const routes = [
 const App = () => {
     return (
         <Router>
-            <Routes>
-                {routes.map(({ path, element, access }) => (
-                    <Route
-                        key={path}
-                        path={path}
-                        element={
-                            access ? (
-                                <ProtectedRoute accessBy={access}>
-                                    <LayoutWrapper>{element}</LayoutWrapper>
-                                </ProtectedRoute>
-                            ) : (
-                                <LayoutWrapper>{element}</LayoutWrapper>
-                            )
-                        }
-                    />
-                ))}
-            </Routes>
+            <Suspense fallback={<Loading />}>
+                <ErrorBoundary>
+                    <Routes>
+                        {routes.map(({ path, element, access }) => (
+                            <Route
+                                key={path}
+                                path={path}
+                                element={
+                                    access ? (
+                                        <ProtectedRoute accessBy={access}>
+                                            <LayoutWrapper>
+                                                {element}
+                                            </LayoutWrapper>
+                                        </ProtectedRoute>
+                                    ) : (
+                                        <LayoutWrapper>{element}</LayoutWrapper>
+                                    )
+                                }
+                            />
+                        ))}
+                    </Routes>
+                </ErrorBoundary>
+            </Suspense>
         </Router>
     )
 }

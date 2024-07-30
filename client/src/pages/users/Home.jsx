@@ -2,7 +2,7 @@ import Hero from "../../components/Product/Hero"
 import NewProducts from "../../components/Product/NewProducts"
 import TopProducts from "../../components/Product/TopProducts"
 
-export const Home = () => {
+const Home = () => {
     return (
         <div className='flex flex-col gap-16'>
             <Hero />
@@ -11,3 +11,5 @@ export const Home = () => {
         </div>
     )
 }
+
+export default Home
