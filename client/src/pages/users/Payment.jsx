@@ -3,7 +3,7 @@ import moment from "moment"
 import { Elements } from "@stripe/react-stripe-js"
 import { showToast } from "../../utils/toast"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { selectStripePromise, selectUser } from "../../features/auth/selector"
 import CheckoutSummary from "../../components/CheckoutSummary"
@@ -17,6 +17,8 @@ const Payment = () => {
     const [orderDetails, setOrderDetails] = useState()
     const [paymentIntentData, setPaymentIntentData] = useState(null)
 
+    const navigate = useNavigate()
+
     const handleGetOrderDetails = async () => {
         try {
             const res = await axios.get(
@@ -28,8 +30,14 @@ const Payment = () => {
                 setOrderDetails(res?.data?.payload?.order)
             }
         } catch (error) {
-            showToast("something went wrong", "error")
+            if (error?.response?.status === 404) {
+                showToast(error?.response?.data?.message, "error")
+                navigate("/signup")
+            } else {
+                showToast("something went wrong", "error")
+            }
             console.log(error)
+            navigate("/shop")
         }
     }
 
@@ -46,7 +54,8 @@ const Payment = () => {
                 setPaymentIntentData(res?.data?.payload)
             }
         } catch (error) {
-            showToast(error?.response?.data?.message, "error")
+            showToast("Something Went Wrong", "error")
+            navigate("/shop")
         }
     }
 
@@ -80,7 +89,7 @@ const Payment = () => {
         const fetchData = async () => {
             try {
                 await handleGetOrderDetails()
-                if (!user?.isAdmin) {
+                if (!user?.isAdmin && orderDetails?.orderItems?.length > 0) {
                     await getPaymentIntent()
                 }
             } catch (error) {

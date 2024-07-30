@@ -8,11 +8,12 @@ import {
     selectTotalPrice,
 } from "../../features/cart/selector"
 import { selectUser } from "../../features/auth/selector"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { addToCart, removeFromCart } from "../../features/cart/cartSlice"
 import { showToast } from "../../utils/toast"
 import CheckoutSummary from "../../components/CheckoutSummary"
 import Timeline from "../../components/Timeline"
+import { useEffect } from "react"
 
 const Cart = () => {
     const dispatch = useDispatch()
@@ -23,14 +24,29 @@ const Cart = () => {
     const totalPrice = useSelector(selectTotalPrice)
     const user = useSelector(selectUser)
 
+    const navigate = useNavigate()
+
     const getTotal = (price, quantity) => {
         return price * quantity
     }
 
     const handleRemoveFromCart = (productId) => {
-        dispatch(removeFromCart(productId))
-        showToast("Product Remove from Cart", "success")
+        const isConfirmed = window.confirm(
+            "Are you sure you want to remove this item from cart?"
+        )
+
+        if (isConfirmed) {
+            dispatch(removeFromCart(productId))
+            showToast("Product Remove from Cart", "success")
+        }
     }
+
+    useEffect(() => {
+        if (cartItems.length === 0) {
+            navigate("/shop")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cartItems.length])
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>

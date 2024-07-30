@@ -2,9 +2,11 @@ import { useEffect, useState } from "react"
 import { showToast } from "../../utils/toast"
 import axios from "axios"
 import ProductCard from "./ProductCard"
+import Loading from "../Loading"
 
 const TopProducts = () => {
     const [productData, setProductData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const getTopProducts = async () => {
         try {
@@ -17,6 +19,8 @@ const TopProducts = () => {
             }
         } catch (error) {
             showToast("Something Went Wrong", "error")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -31,6 +35,10 @@ const TopProducts = () => {
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <div className='flex flex-col'>

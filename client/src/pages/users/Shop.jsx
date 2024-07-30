@@ -10,6 +10,7 @@ import { useSelector } from "react-redux"
 import { selectAllFilters } from "../../features/filter/selector"
 import FilterModal from "../../modal/FilterModal"
 import Pagination from "../../components/Pagination"
+import Loading from "../../components/Loading"
 
 const Shop = () => {
     const [categories, setCategories] = useState([])
@@ -20,6 +21,7 @@ const Shop = () => {
     const [uniqueBrands, setUniqueBrands] = useState([])
     const filter = useSelector(selectAllFilters)
     const [isOpen, setIsOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     const toggleModal = () => {
         setIsOpen(!isOpen)
@@ -77,6 +79,8 @@ const Shop = () => {
             }
         } catch (error) {
             showToast("Something Went Wrong", "error")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -99,6 +103,10 @@ const Shop = () => {
         const uniqueBrandsArray = [...new Set(brands)]
         setUniqueBrands(uniqueBrandsArray)
     }, [productData])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <div className='flex justify-center mt-5 px-10 py-10 gap-10'>

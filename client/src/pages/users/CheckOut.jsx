@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import divisionDistrictData from "../../utils/divisionDistrictData"
 import CheckoutSummary from "../../components/CheckoutSummary"
 import { useDispatch, useSelector } from "react-redux"
@@ -71,6 +71,13 @@ const CheckOut = () => {
             }
         }
     }
+
+    useEffect(() => {
+        if (cartItems.length === 0) {
+            navigate("/shop")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cartItems.length])
 
     return (
         <div className='flex flex-col space-y-2 mt-10'>

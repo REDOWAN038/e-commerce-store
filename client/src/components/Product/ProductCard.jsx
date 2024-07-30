@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { BsCart2 } from "react-icons/bs"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import moment from "moment"
@@ -24,6 +24,7 @@ import axios from "axios"
 const ProductCard = ({ product, type, user = "" }) => {
     const dispatch = useDispatch()
     const [favourite, setFavourite] = useState()
+    const navigate = useNavigate()
 
     const handleAddToFavourites = () => {
         if (favourite) {
@@ -163,6 +164,14 @@ const ProductCard = ({ product, type, user = "" }) => {
                         </div>
                     )}
                 </div>
+                <button
+                    className='btn btn-primary btn-sm mt-3'
+                    onClick={() =>
+                        navigate(`/product/details/${product?.slug}`)
+                    }
+                >
+                    View Details
+                </button>
             </div>
         </div>
     )

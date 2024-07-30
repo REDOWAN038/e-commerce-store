@@ -5,11 +5,13 @@ import ProductDetails from "../../components/Product/ProductDetails"
 import { showToast } from "../../utils/toast"
 import ProductReviews from "../../components/Product/ProductReviews"
 import ProductReviewInfo from "../../components/Product/ProductReviewInfo"
+import Loading from "../../components/Loading"
 
 const Product = () => {
     const { slug } = useParams()
     const [product, setProduct] = useState([])
     const [ratingsCount, setRatingsCount] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const getProductDetails = async () => {
         try {
@@ -23,6 +25,8 @@ const Product = () => {
             }
         } catch (error) {
             showToast(error?.response?.data?.message, "error")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -37,6 +41,10 @@ const Product = () => {
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <div className='flex flex-col mt-8 space-y-3'>
