@@ -98,8 +98,8 @@ const UserLoggedIn = () => {
                                 tabIndex={0}
                                 className='dropdown-content menu bg-base-100 rounded-box z-[1] w-56 p-2 shadow overflow-y-auto'
                             >
-                                {favourites.map((fav, idx) => (
-                                    <li key={idx}>
+                                {favourites.map((fav) => (
+                                    <li key={fav._id}>
                                         <Favourites fav={fav} />
                                     </li>
                                 ))}

@@ -12,8 +12,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { addToCart, removeFromCart } from "../../features/cart/cartSlice"
 import { showToast } from "../../utils/toast"
 import CheckoutSummary from "../../components/CheckoutSummary"
-import Timeline from "../../components/Timeline"
 import { useEffect } from "react"
+import Steps from "../../components/Product/Steps"
 
 const Cart = () => {
     const dispatch = useDispatch()
@@ -49,22 +49,24 @@ const Cart = () => {
     }, [cartItems.length])
 
     return (
-        <div className='flex flex-col space-y-2 mt-10'>
+        <div className='flex flex-col mt-10'>
             {!user?.isAdmin && (
                 <div className='flex mx-auto'>
-                    <Timeline />
+                    {/* <Timeline /> */}
+                    <Steps color1={"step-primary"} content1={"✓"} />
                 </div>
             )}
-            <div className='flex flex-col space-y-10 lg:space-y-0 lg:flex-row w-full lg:w-11/12 lg:mx-auto'>
+
+            <div className='flex flex-col mt-10 space-y-10 lg:space-y-0 lg:flex-row w-full lg:w-11/12 lg:mx-auto'>
                 {/* about product */}
                 <div className='flex flex-col bg-white shadow-lg w-11/12 lg:w-7/12 mx-auto gap-6 px-10 py-5 rounded-lg'>
                     <div className='flex items-center justify-between pb-4 border-b-2'>
                         <h2 className='card-title'>{`Total Items : (${cartItems.length})`}</h2>
                         <h2 className='text-xl text-green-700'>{`Your Total : $${itemsPrice}`}</h2>
                     </div>
-                    {cartItems.map((item, idx) => (
+                    {cartItems.map((item) => (
                         <div
-                            key={idx}
+                            key={item._id}
                             className='flex items-center justify-between border-b-2 pb-4'
                         >
                             {/* image and info */}

@@ -49,8 +49,12 @@ const TopProducts = () => {
             </h1>
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mx-auto'>
-                {productData.map((product, idx) => (
-                    <ProductCard key={idx} product={product} type='Top' />
+                {productData.map((product) => (
+                    <ProductCard
+                        key={product._id}
+                        product={product}
+                        type='Top'
+                    />
                 ))}
             </div>
         </div>

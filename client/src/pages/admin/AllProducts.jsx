@@ -61,9 +61,9 @@ const AllProducts = () => {
                 </Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mx-auto'>
-                {productData.map((product, idx) => (
+                {productData.map((product) => (
                     <ProductCard
-                        key={idx}
+                        key={product._id}
                         product={product}
                         type='Top'
                         user='Admin'

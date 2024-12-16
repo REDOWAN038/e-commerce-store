@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 import { selectStripePromise, selectUser } from "../../features/auth/selector"
 import CheckoutSummary from "../../components/CheckoutSummary"
 import StripePayment from "../../components/StripePayment"
-import Timeline from "../../components/Timeline"
+import Steps from "../../components/Product/Steps"
 
 const Payment = () => {
     const { id } = useParams()
@@ -101,17 +101,66 @@ const Payment = () => {
     }, [])
 
     return (
-        <div className='flex flex-col space-y-2 mt-10'>
-            {!user?.isAdmin && (
-                <div className='flex mx-auto'>
-                    <Timeline
+        <div className='flex flex-col mt-10'>
+            {!user?.isAdmin &&
+                orderDetails?.isPaid &&
+                !orderDetails?.isDelivered && (
+                    <div className='flex mx-auto'>
+                        {/* <Timeline
                         class1='bg-primary'
                         fill1='currentColor'
                         class2='bg-primary'
                         fill2='currentColor'
+                    /> */}
+                        <Steps
+                            color1={"step-primary"}
+                            content1={"✓"}
+                            color2={"step-primary"}
+                            content2={"✓"}
+                            color3={"step-primary"}
+                            content3={"✓"}
+                        />
+                    </div>
+                )}
+
+            {!user?.isAdmin && !orderDetails?.isPaid && (
+                <div className='flex mx-auto'>
+                    {/* <Timeline
+                        class1='bg-primary'
+                        fill1='currentColor'
+                        class2='bg-primary'
+                        fill2='currentColor'
+                    /> */}
+                    <Steps
+                        color1={"step-primary"}
+                        content1={"✓"}
+                        color2={"step-primary"}
+                        content2={"✓"}
                     />
                 </div>
             )}
+
+            {!user?.isAdmin && orderDetails?.isDelivered && (
+                <div className='flex mx-auto'>
+                    {/* <Timeline
+                        class1='bg-primary'
+                        fill1='currentColor'
+                        class2='bg-primary'
+                        fill2='currentColor'
+                    /> */}
+                    <Steps
+                        color1={"step-primary"}
+                        content1={"✓"}
+                        color2={"step-primary"}
+                        content2={"✓"}
+                        color3={"step-primary"}
+                        content3={"✓"}
+                        color4={"step-primary"}
+                        content4={"✓"}
+                    />
+                </div>
+            )}
+
             <div className='flex flex-col justify-center gap-8 mt-10 w-11/12 md:w-9/12 lg:w-7/12 mx-auto'>
                 <div className='w-full'>
                     {/* product details */}
@@ -143,8 +192,8 @@ const Payment = () => {
 
                                     <tbody>
                                         {orderDetails?.orderItems?.map(
-                                            (item, index) => (
-                                                <tr key={index}>
+                                            (item) => (
+                                                <tr key={item._id}>
                                                     <td className='p-2 flex justify-center'>
                                                         <img
                                                             src={item.images[0]}

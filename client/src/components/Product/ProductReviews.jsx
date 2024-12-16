@@ -6,8 +6,8 @@ const ProductReviews = ({ reviews }) => {
     return (
         <div className='border-b-2'>
             <div className='flex flex-col gap-16 px-10 py-5 lg:px-10 lg:py-10 w-full md:w-11/12 mx-auto'>
-                {reviews?.map((review, idx) => (
-                    <div key={idx} className='flex flex-col gap-3'>
+                {reviews?.map((review) => (
+                    <div key={review._id} className='flex flex-col gap-3'>
                         <div className='flex gap-4'>
                             <div className='avatar'>
                                 <div className='w-12 border-2 rounded-full'>

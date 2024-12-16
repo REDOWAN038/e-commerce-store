@@ -20,8 +20,11 @@ const BrandFilter = ({ brands }) => {
         <div className='border-b border-slate-300 pt-5 pb-5'>
             <h4 className='text-sm lg:text-base font-semibold mb-2'>Brands</h4>
             <div className='grid grid-cols-2 lg:grid-cols-1'>
-                {brands?.map((brand, idx) => (
-                    <label key={idx} className='flex items-center space-x-2'>
+                {brands?.map((brand) => (
+                    <label
+                        key={brand._id}
+                        className='flex items-center space-x-2'
+                    >
                         <input
                             type='checkbox'
                             className='rounded'

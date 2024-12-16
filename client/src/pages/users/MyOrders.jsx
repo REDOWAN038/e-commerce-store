@@ -67,7 +67,7 @@ const MyOrders = () => {
                             <tbody>
                                 {orders?.map((order, idx) => (
                                     <tr
-                                        key={idx}
+                                        key={order._id}
                                         className=' cursor-pointer hover:bg-gray-300'
                                     >
                                         <th className='p-2 text-center whitespace-nowrap'>

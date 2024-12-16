@@ -10,14 +10,14 @@ export const favouriteSlice = createSlice({
     reducers: {
         addToFavorites: (state, action) => {
             const product = action.payload;
-            const isAlreadyFavorite = state.favourites.some(fav => fav.id === product.id);
+            const isAlreadyFavorite = state.favourites.some(fav => fav._id === product._id);
             if (!isAlreadyFavorite) {
                 state.favourites.push(product);
             }
         },
         removeFromFavorites: (state, action) => {
             const productId = action.payload;
-            state.favourites = state.favourites.filter(fav => fav.id !== productId);
+            state.favourites = state.favourites.filter(fav => fav._id !== productId);
         },
         setFavorites: (state, action) => {
             state.favourites = action.payload;

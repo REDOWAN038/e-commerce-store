@@ -170,7 +170,7 @@ const Categories = () => {
                                 <tbody>
                                     {categories?.map((category, idx) => (
                                         <tr
-                                            key={idx}
+                                            key={categories._id}
                                             className=' cursor-pointer hover:bg-gray-300'
                                         >
                                             <th className='p-2 text-center whitespace-nowrap'>

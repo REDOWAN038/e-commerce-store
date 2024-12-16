@@ -15,7 +15,7 @@ import { clearCartItems } from "../../features/cart/cartSlice"
 import { useNavigate } from "react-router-dom"
 import { showToast } from "../../utils/toast"
 import OrderDetails from "../../components/OrderDetails"
-import Timeline from "../../components/Timeline"
+import Steps from "../../components/Product/Steps"
 
 const CheckOut = () => {
     const [phone, setPhone] = useState("")
@@ -89,13 +89,20 @@ const CheckOut = () => {
     }, [orderId])
 
     return (
-        <div className='flex flex-col space-y-2 mt-10'>
+        <div className='flex flex-col mt-10'>
             {!user?.isAdmin && (
                 <div className='flex mx-auto'>
-                    <Timeline class1='bg-primary' fill1='currentColor' />
+                    {/* <Timeline class1='bg-primary' fill1='currentColor' /> */}
+                    <Steps
+                        color1={"step-primary"}
+                        content1={"✓"}
+                        color2={"step-primary"}
+                        content2={"✓"}
+                    />
                 </div>
             )}
-            <div className='flex flex-col space-y-10 lg:space-y-0 justify-center lg:space-x-10 lg:flex-row w-full lg:w-[1000px] lg:mx-auto'>
+
+            <div className='flex flex-col mt-10 space-y-10 lg:space-y-0 justify-center lg:space-x-10 lg:flex-row w-full lg:w-[1000px] lg:mx-auto'>
                 {/* shipping address */}
                 <div className='flex flex-col bg-base-100 shadow-lg w-11/12 lg:w-6/12 gap-6 px-10 py-5 mx-auto rounded-lg'>
                     <div className='w-full'>

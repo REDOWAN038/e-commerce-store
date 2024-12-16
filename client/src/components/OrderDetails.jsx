@@ -5,8 +5,11 @@ const OrderDetails = ({ items }) => {
 
     return (
         <>
-            {items?.map((item, idx) => (
-                <div key={idx} className='flex items-center justify-between'>
+            {items?.map((item) => (
+                <div
+                    key={item._id}
+                    className='flex items-center justify-between'
+                >
                     <div className='flex items-center gap-1 font-bold'>
                         <h1>{item.name}</h1>
                         <span className='text-sm'>x</span>

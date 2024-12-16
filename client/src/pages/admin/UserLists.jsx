@@ -96,7 +96,7 @@ const UserLists = () => {
                             <tbody>
                                 {users?.map((user, idx) => (
                                     <tr
-                                        key={idx}
+                                        key={user._id}
                                         className=' cursor-pointer hover:bg-gray-300'
                                     >
                                         <th className='p-2 text-center whitespace-nowrap'>

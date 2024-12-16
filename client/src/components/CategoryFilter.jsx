@@ -22,8 +22,11 @@ const CategoryFilter = ({ categories }) => {
                 Categories
             </h4>
             <div className='grid grid-cols-2 lg:grid-cols-1'>
-                {categories?.map((category, idx) => (
-                    <label key={idx} className='flex items-center space-x-2'>
+                {categories?.map((category) => (
+                    <label
+                        key={category._id}
+                        className='flex items-center space-x-2'
+                    >
                         <input
                             type='checkbox'
                             className='rounded'
