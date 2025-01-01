@@ -106,57 +106,37 @@ const Payment = () => {
                 orderDetails?.isPaid &&
                 !orderDetails?.isDelivered && (
                     <div className='flex mx-auto'>
-                        {/* <Timeline
-                        class1='bg-primary'
-                        fill1='currentColor'
-                        class2='bg-primary'
-                        fill2='currentColor'
-                    /> */}
                         <Steps
-                            color1={"step-primary"}
-                            content1={"✓"}
-                            color2={"step-primary"}
-                            content2={"✓"}
-                            color3={"step-primary"}
-                            content3={"✓"}
+                            colors={[
+                                "step-primary",
+                                "step-primary",
+                                "step-primary",
+                                "",
+                            ]}
+                            content={["✓", "✓", "✓", "✕"]}
                         />
                     </div>
                 )}
 
             {!user?.isAdmin && !orderDetails?.isPaid && (
                 <div className='flex mx-auto'>
-                    {/* <Timeline
-                        class1='bg-primary'
-                        fill1='currentColor'
-                        class2='bg-primary'
-                        fill2='currentColor'
-                    /> */}
                     <Steps
-                        color1={"step-primary"}
-                        content1={"✓"}
-                        color2={"step-primary"}
-                        content2={"✓"}
+                        colors={["step-primary", "step-primary", "", ""]}
+                        content={["✓", "✓", "✕", "✕"]}
                     />
                 </div>
             )}
 
             {!user?.isAdmin && orderDetails?.isDelivered && (
                 <div className='flex mx-auto'>
-                    {/* <Timeline
-                        class1='bg-primary'
-                        fill1='currentColor'
-                        class2='bg-primary'
-                        fill2='currentColor'
-                    /> */}
                     <Steps
-                        color1={"step-primary"}
-                        content1={"✓"}
-                        color2={"step-primary"}
-                        content2={"✓"}
-                        color3={"step-primary"}
-                        content3={"✓"}
-                        color4={"step-primary"}
-                        content4={"✓"}
+                        colors={[
+                            "step-primary",
+                            "step-primary",
+                            "step-primary",
+                            "step-primary",
+                        ]}
+                        content={["✓", "✓", "✓", "✓"]}
                     />
                 </div>
             )}

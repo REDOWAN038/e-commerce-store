@@ -94,10 +94,8 @@ const CheckOut = () => {
                 <div className='flex mx-auto'>
                     {/* <Timeline class1='bg-primary' fill1='currentColor' /> */}
                     <Steps
-                        color1={"step-primary"}
-                        content1={"✓"}
-                        color2={"step-primary"}
-                        content2={"✓"}
+                        colors={["step-primary", "step-primary", "", ""]}
+                        content={["✓", "✓", "✕", "✕"]}
                     />
                 </div>
             )}

@@ -53,7 +53,10 @@ const Cart = () => {
             {!user?.isAdmin && (
                 <div className='flex mx-auto'>
                     {/* <Timeline /> */}
-                    <Steps color1={"step-primary"} content1={"✓"} />
+                    <Steps
+                        colors={["step-primary", "", "", ""]}
+                        content={["✓", "✕", "✕", "✕"]}
+                    />
                 </div>
             )}
 
